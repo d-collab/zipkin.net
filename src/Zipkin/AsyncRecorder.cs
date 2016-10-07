@@ -11,7 +11,7 @@ namespace Zipkin
 		private readonly SpanDispatcher _dispatcher;
 		private readonly ConcurrentQueue<Span> _enqueuedSpans = new ConcurrentQueue<Span>();
 		private readonly AutoResetEvent _spansEnqueuedEvent = new AutoResetEvent(false);
-		private int _disposed;
+		private volatile int _disposed;
 
 		public AsyncRecorder(SpanDispatcher dispatcher)
 		{
