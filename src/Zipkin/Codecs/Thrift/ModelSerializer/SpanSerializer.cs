@@ -157,12 +157,12 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 			oprot.IncrementRecursionDepth();
 			try
 			{
-				TStruct struc = new TStruct("Span");
+				TStruct struc = new TStruct(/*"Span"*/);
 				oprot.WriteStructBegin(struc);
 				TField field = new TField();
 				if (span.TraceId != 0L)
 				{
-					field.Name = "trace_id";
+//					field.Name = "trace_id";
 					field.Type = TType.I64;
 					field.ID = 1;
 					oprot.WriteFieldBegin(field);

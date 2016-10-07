@@ -86,12 +86,12 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 			oprot.IncrementRecursionDepth();
 			try
 			{
-				TStruct struc = new TStruct("BinaryAnnotation");
+				TStruct struc = new TStruct(/*"BinaryAnnotation"*/);
 				oprot.WriteStructBegin(struc);
 				TField field = new TField();
 				if (annotation.Key != null)
 				{
-					field.Name = "key";
+//					field.Name = "key";
 					field.Type = TType.String;
 					field.ID = 1;
 					oprot.WriteFieldBegin(field);

@@ -63,12 +63,12 @@
 			oprot.IncrementRecursionDepth();
 			try
 			{
-				TStruct struc = new TStruct("LogEntry");
+				TStruct struc = new TStruct(/*"LogEntry"*/);
 				oprot.WriteStructBegin(struc);
 				TField field = new TField();
 				if (logEntry.category != null)
 				{
-					field.Name = "category";
+//					field.Name = "category";
 					field.Type = TType.String;
 					field.ID = 1;
 					oprot.WriteFieldBegin(field);
@@ -77,7 +77,7 @@
 				}
 				if (logEntry.message != null)
 				{
-					field.Name = "message";
+//					field.Name = "message";
 					field.Type = TType.String;
 					field.ID = 2;
 					oprot.WriteFieldBegin(field);

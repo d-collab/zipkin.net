@@ -75,12 +75,12 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 			oprot.IncrementRecursionDepth();
 			try
 			{
-				TStruct struc = new TStruct("Annotation");
+				TStruct struc = new TStruct(/*"Annotation"*/);
 				oprot.WriteStructBegin(struc);
 				TField field = new TField();
 				if (annotation.Timestamp != DateTimeOffset.MinValue)
 				{
-					field.Name = "timestamp";
+//					field.Name = "timestamp";
 					field.Type = TType.I64;
 					field.ID = 1;
 					oprot.WriteFieldBegin(field);
@@ -89,7 +89,7 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 				}
 				if (annotation.Value != null)
 				{
-					field.Name = "value";
+//					field.Name = "value";
 					field.Type = TType.String;
 					field.ID = 2;
 					oprot.WriteFieldBegin(field);
@@ -98,7 +98,7 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 				}
 				if (annotation.Host != null)
 				{
-					field.Name = "host";
+//					field.Name = "host";
 					field.Type = TType.Struct;
 					field.ID = 3;
 					oprot.WriteFieldBegin(field);

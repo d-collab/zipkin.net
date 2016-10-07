@@ -77,12 +77,12 @@
 			oprot.IncrementRecursionDepth();
 			try
 			{
-				TStruct struc = new TStruct("Endpoint");
+				TStruct struc = new TStruct(/*"Endpoint"*/);
 				oprot.WriteStructBegin(struc);
 				TField field = new TField();
 				if (endpoint.IPAddress != null)
 				{
-					field.Name = "ipv4";
+//					field.Name = "ipv4";
 					field.Type = TType.I32;
 					field.ID = 1;
 					oprot.WriteFieldBegin(field);
@@ -91,7 +91,7 @@
 				}
 				if (endpoint.Port.HasValue)
 				{
-					field.Name = "port";
+//					field.Name = "port";
 					field.Type = TType.I16;
 					field.ID = 2;
 					oprot.WriteFieldBegin(field);
@@ -100,7 +100,7 @@
 				}
 				if (endpoint.ServiceName != null)
 				{
-					field.Name = "service_name";
+//					field.Name = "service_name";
 					field.Type = TType.String;
 					field.ID = 3;
 					oprot.WriteFieldBegin(field);

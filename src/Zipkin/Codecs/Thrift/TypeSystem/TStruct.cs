@@ -2,11 +2,11 @@
 {
 	public struct TStruct
 	{
-		public string Name;
-
-		public TStruct(string name)
-		{
-			this.Name = name;
-		}
+//		public string Name;
+//
+//		public TStruct(string name)
+//		{
+//			this.Name = name;
+//		}
 	}
 }

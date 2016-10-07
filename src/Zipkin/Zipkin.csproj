@@ -55,10 +55,13 @@
     <Compile Include="Codecs\Thrift\Scribe\LogEntry.cs" />
     <Compile Include="Codecs\Thrift\Scribe\LogEntrySerializer.cs" />
     <Compile Include="Codecs\Thrift\Scribe\ScribeService.cs" />
-    <Compile Include="Codecs\Thrift\TFramedTransport.cs" />
+    <Compile Include="Codecs\Thrift\Transports\TFramedTransport.cs" />
     <Compile Include="Codecs\Thrift\ThriftProtocol.cs" />
     <Compile Include="Codecs\Thrift\ThriftProtocol.Write.cs" />
     <Compile Include="Codecs\Thrift\ThriftProtocol.Read.cs" />
+    <Compile Include="Codecs\Thrift\Transports\TSocket.cs" />
+    <Compile Include="Codecs\Thrift\Transports\TStreamTransport.cs" />
+    <Compile Include="Codecs\Thrift\Transports\TTransport.cs" />
     <Compile Include="Codecs\Thrift\TypeSystem\TApplicationException.cs" />
     <Compile Include="Codecs\Thrift\TypeSystem\TException.cs" />
     <Compile Include="Codecs\Thrift\TypeSystem\TMessage.cs" />

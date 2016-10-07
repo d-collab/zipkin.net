@@ -112,12 +112,12 @@
 				oprot.IncrementRecursionDepth();
 				try
 				{
-					TStruct struc = new TStruct("Log_args");
+					var struc = new TStruct(/*"Log_args"*/);
 					oprot.WriteStructBegin(struc);
 					TField field = new TField();
 					if (Messages != null)
 					{
-						field.Name = "messages";
+//						field.Name = "messages";
 						field.Type = TType.List;
 						field.ID = 1;
 						oprot.WriteFieldBegin(field);
@@ -192,13 +192,13 @@
 				oprot.IncrementRecursionDepth();
 				try
 				{
-					TStruct struc = new TStruct("Log_result");
+					TStruct struc = new TStruct(/*"Log_result"*/);
 					oprot.WriteStructBegin(struc);
 					TField field = new TField();
 
 					if (this.Success != null)
 					{
-						field.Name = "Success";
+//						field.Name = "Success";
 						field.Type = TType.I32;
 						field.ID = 0;
 						oprot.WriteFieldBegin(field);

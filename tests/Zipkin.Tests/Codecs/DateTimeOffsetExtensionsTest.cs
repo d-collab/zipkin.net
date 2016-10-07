@@ -12,7 +12,7 @@
 		public void ConversionToUnixEpochInMicroseconds_back_and_forward()
 		{
 			// Arrange
-			var dt = new DateTimeOffset(2016, 7, 16, 16, 42, 11, 999, TimeSpan.Zero);
+			var dt = new DateTimeOffset(2016, 7, 16, 16, 42, 11, 999, TimeSpan.FromHours(1));
 
 			// Act
 			var nixVersion = DateTimeOffsetExtensions.ToNixTimeMicro(dt);

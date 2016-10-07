@@ -10,13 +10,13 @@
 
 	public struct TField
 	{
-		public string Name;
+//		public string Name;
 		public TType Type;
 		public short ID;
 
-		public TField(string name, TType type, short id)
+		public TField(/*string name, */TType type, short id)
 		{
-			this.Name = name;
+//			this.Name = name;
 			this.Type = type;
 			this.ID = id;
 		}

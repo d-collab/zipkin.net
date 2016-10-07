@@ -80,14 +80,14 @@ namespace Zipkin.Codecs.Thrift.TypeSystem
 
 		public void Write(ThriftProtocol oprot)
 		{
-			TStruct struc = new TStruct("TApplicationException");
+			TStruct struc = new TStruct(/*"TApplicationException"*/);
 			TField field = new TField();
 
 			oprot.WriteStructBegin(struc);
 
 			if (!string.IsNullOrEmpty(Message))
 			{
-				field.Name = "message";
+//				field.Name = "message";
 				field.Type = TType.String;
 				field.ID = 1;
 				oprot.WriteFieldBegin(field);
@@ -95,12 +95,13 @@ namespace Zipkin.Codecs.Thrift.TypeSystem
 				oprot.WriteFieldEnd();
 			}
 
-			field.Name = "type";
+//			field.Name = "type";
 			field.Type = TType.I32;
 			field.ID = 2;
 			oprot.WriteFieldBegin(field);
 			oprot.WriteI32((int)type);
 			oprot.WriteFieldEnd();
+
 			oprot.WriteFieldStop();
 			oprot.WriteStructEnd();
 		}
