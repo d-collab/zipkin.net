@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+	<metadata>
+		<id>Zipkin</id>
+		<title>Zipkin client</title>
+		<version>$version$</version>
+		<authors>hamilton verissimo (aka hammett)</authors>
+		<owners>Clear CTVM</owners>
+		<licenseUrl>https://raw.githubusercontent.com/clearctvm/zipkin.net/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/clearctvm/zipkin.net</projectUrl>
+		<!-- <iconUrl>http://docs.castleproject.org/GetFile.aspx?File=/castleLogo100px.png</iconUrl> -->
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Alternative Zipkin dispatcher using RabbitMQ</description>
+		<summary>
+			If your infrastructure already uses RabbitMQ, this dispatcher implementation sends the 
+			serialized Zipkin Spans to a RabbitMQ exchange. 
+		</summary>
+		<copyright>Copyright 2016 Clear CTVM - (http://www.clear.com.br) </copyright>
+		<tags>zipkin distributed tracing rabbitmq</tags>
+
+		<dependencies>
+			<group>
+				<dependency id="System.Buffers" version="4.0.0" />
+				<dependency id="Zipkin" version="$version$" />
+				<dependency id="RabbitMqNext" version="1.0.12" />
+			</group>
+		</dependencies>
+
+		<frameworkAssemblies>
+			<frameworkAssembly assemblyName="System.Core" targetFramework="net461" />
+		</frameworkAssemblies>
+	</metadata>
+
+	<files>
+		<file src="LICENSE.txt" />
+		<file src="src\Zipkin\bin\Release\Zipkin.dll" target="lib/net461" />
+		<file src="src\Zipkin\bin\Release\Zipkin.pdb" target="lib/net461" />
+		<file src="src\Zipkin\bin\Release\Zipkin.xml" target="lib/net461" />
+	</files>
+
+</package>

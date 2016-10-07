@@ -14,7 +14,7 @@
 
 		public void WriteMessageBegin(TMessage message)
 		{
-			if (_strictWrite)
+			if (StrictWrite)
 			{
 				uint version = Version1 | (uint)(message.type);
 				WriteI32((int)version);

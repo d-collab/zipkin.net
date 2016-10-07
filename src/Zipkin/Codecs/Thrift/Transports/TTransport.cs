@@ -1,6 +1,7 @@
 namespace Zipkin.Codecs.Thrift
 {
 	using System;
+	using System.IO;
 
 	public abstract class TTransport : IDisposable
 	{
@@ -20,6 +21,13 @@ namespace Zipkin.Codecs.Thrift
 
 		public virtual void Flush()
 		{
+		}
+
+		public bool CanSeek { get; protected set; }
+
+		public virtual long Seek(long len, SeekOrigin current)
+		{
+			throw new NotImplementedException();
 		}
 
 		// IDisposable

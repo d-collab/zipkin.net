@@ -9,6 +9,7 @@ namespace Zipkin.Codecs.Thrift
 		public TStreamTransport(Stream stream)
 		{
 			_stream = stream;
+			this.CanSeek = _stream.CanSeek;
 		}
 
 		public override int Read(byte[] buf, int off, int len)
@@ -19,6 +20,16 @@ namespace Zipkin.Codecs.Thrift
 		public override void Write(byte[] buf, int off, int len)
 		{
 			_stream.Write(buf, off, len);
+		}
+
+		public override void Flush()
+		{
+			_stream.Flush();
+		}
+
+		public override long Seek(long len, SeekOrigin current)
+		{
+			return _stream.Seek(len, current);
 		}
 
 		protected override void Dispose(bool disposing)

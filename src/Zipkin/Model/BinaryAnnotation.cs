@@ -107,18 +107,23 @@ namespace Zipkin
 					this.ValAsBool = value.Length == 1 && value[0] == 1;
 					break;
 				case AnnotationType.I16:
+					Array.Reverse(value);
 					this.ValAsI16 = BitConverter.ToInt16(value, 0);
 					break;
 				case AnnotationType.I32:
+					Array.Reverse(value);
 					this.ValAsI32 = BitConverter.ToInt32(value, 0);
 					break;
 				case AnnotationType.I64:
+					Array.Reverse(value);
 					this.ValAsI64 = BitConverter.ToInt64(value, 0);
 					break;
 				case AnnotationType.DOUBLE:
+					Array.Reverse(value);
 					this.ValAsDouble = BitConverter.ToDouble(value, 0);
 					break;
 				case AnnotationType.BYTES:
+					Array.Reverse(value);
 					this.ValAsBArray = value;
 					break;
 				case AnnotationType.STRING:

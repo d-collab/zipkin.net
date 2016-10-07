@@ -1,58 +1,94 @@
-namespace Zipkin.Codecs
+namespace Zipkin
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Globalization;
 	using System.IO;
 	using System.Text;
-	using Json;
-	using Model;
+	using Codecs;
+	using Codecs.Json;
 
-	public class JsonCodec
+
+	public class JsonCodec : Codec
 	{
-		public void Encode(Span span, Stream stream)
+		public JsonCodec() : base("application/json")
+		{
+		}
+
+		public override void WriteSpans(IList<Span> spans, Stream stream)
 		{
 			using (var w = new StreamWriter(stream, Encoding.UTF8, 128, leaveOpen: true))
 			{
-				w.Write("{\"traceId\":\"");
-				w.WriteLowerHex(span.TraceId);
-				w.Write("\",\"id\":\"");
-				w.WriteLowerHex(span.Id);
-				w.Write("\",\"name\":\"");
-				w.WriteJsonEscaped(span.Name);
-				w.Write('"');
+				foreach (var span in spans)
+				{
+					if (span == null) continue;
 
-				if (span.ParentId.HasValue)
-				{
-					w.Write(",\"parentId\":\"");
-					w.WriteLowerHex(span.ParentId.Value);
-					w.Write('"');
-				}
-				if (span.Timestamp.HasValue)
-				{
-					w.Write(",\"timestamp\":");
-					w.Write(span.Timestamp.Value.ToNixTimeMicro());
-				}
-				if (span.DurationInMicroseconds.HasValue)
-				{
-					w.Write(",\"duration\":");
-					w.Write(span.DurationInMicroseconds.Value);
-				}
-				if (span.Annotations != null && span.Annotations.Count != 0)
-				{
-					w.Write(",\"annotations\":");
-					WriteAnnotations(span.Annotations, w);
-				}
-				if (span.BinaryAnnotations != null && span.BinaryAnnotations.Count != 0)
-				{
-					w.Write(",\"binaryAnnotations\":");
-					WriteBinaryAnnotations(span.BinaryAnnotations, w);
-				}
-				if (span.IsDebug)
-				{
-					w.Write(",\"debug\":true");
-				}
-				w.Write('}');
+					InternalWriteSpan(w, span);
+				}	
 			}
+		}
+
+		public override void WriteSpan(Span span, Stream stream)
+		{
+			if (span == null) return;
+
+			using (var w = new StreamWriter(stream, Encoding.UTF8, 128, leaveOpen: true))
+			{
+				InternalWriteSpan(w, span);
+			}
+		}
+
+		public override IList<Span> ReadSpans(Stream stream)
+		{
+			throw new NotImplementedException();
+		}
+
+		public override Span ReadSpan(Stream stream)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void InternalWriteSpan(StreamWriter w, Span span)
+		{
+			w.Write("{\"traceId\":\"");
+			w.WriteLowerHex(span.TraceId);
+			w.Write("\",\"id\":\"");
+			w.WriteLowerHex(span.Id);
+			w.Write("\",\"name\":\"");
+			w.WriteJsonEscaped(span.Name);
+			w.Write('"');
+
+			if (span.ParentId.HasValue)
+			{
+				w.Write(",\"parentId\":\"");
+				w.WriteLowerHex(span.ParentId.Value);
+				w.Write('"');
+			}
+			if (span.Timestamp.HasValue)
+			{
+				w.Write(",\"timestamp\":");
+				w.Write(span.Timestamp.Value.ToNixTimeMicro());
+			}
+			if (span.DurationInMicroseconds.HasValue)
+			{
+				w.Write(",\"duration\":");
+				w.Write(span.DurationInMicroseconds.Value);
+			}
+			if (span.Annotations != null && span.Annotations.Count != 0)
+			{
+				w.Write(",\"annotations\":");
+				WriteAnnotations(span.Annotations, w);
+			}
+			if (span.BinaryAnnotations != null && span.BinaryAnnotations.Count != 0)
+			{
+				w.Write(",\"binaryAnnotations\":");
+				WriteBinaryAnnotations(span.BinaryAnnotations, w);
+			}
+			if (span.IsDebug)
+			{
+				w.Write(",\"debug\":true");
+			}
+			w.Write('}');
 		}
 
 		private static void WriteBinaryAnnotations(IList<BinaryAnnotation> binaryAnnotations, StreamWriter w)

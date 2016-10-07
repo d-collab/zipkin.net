@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncRecorder.cs" />
+    <Compile Include="Codecs\Codec.cs" />
     <Compile Include="Codecs\Thrift\ModelSerializer\AnnotationSerializer.cs" />
     <Compile Include="Codecs\Thrift\ModelSerializer\BinaryAnnotationSerializer.cs" />
     <Compile Include="Codecs\Thrift\ModelSerializer\EndpointSerializer.cs" />
@@ -59,7 +60,7 @@
     <Compile Include="Codecs\Thrift\ThriftProtocol.cs" />
     <Compile Include="Codecs\Thrift\ThriftProtocol.Write.cs" />
     <Compile Include="Codecs\Thrift\ThriftProtocol.Read.cs" />
-    <Compile Include="Codecs\Thrift\Transports\TSocket.cs" />
+    <Compile Include="Codecs\Thrift\Transports\TTcpClientTransport.cs" />
     <Compile Include="Codecs\Thrift\Transports\TStreamTransport.cs" />
     <Compile Include="Codecs\Thrift\Transports\TTransport.cs" />
     <Compile Include="Codecs\Thrift\TypeSystem\TApplicationException.cs" />
@@ -72,20 +73,25 @@
     <Compile Include="Codecs\Thrift\TypeSystem\TList.cs" />
     <Compile Include="Codecs\Thrift\TypeSystem\TMap.cs" />
     <Compile Include="Codecs\Thrift\TypeSystem\TStruct.cs" />
+    <Compile Include="FluentZipkinBootstrapper.cs" />
     <Compile Include="Model\Annotation.cs" />
     <Compile Include="Model\AnnotationConstants.cs" />
     <Compile Include="Model\AnnotationType.cs" />
     <Compile Include="Model\BinaryAnnotation.cs" />
+    <Compile Include="Model\SpanExtensions.cs" />
     <Compile Include="Recorder.cs" />
     <Compile Include="Model\Endpoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Span.cs" />
+    <Compile Include="RecorderMetrics.cs" />
     <Compile Include="RestSpanDispatcher.cs" />
+    <Compile Include="ScribeSpanDispatcher.cs" />
     <Compile Include="SpanDispatcher.cs" />
-    <Compile Include="ThriftSpanDispatcher.cs" />
+    <Compile Include="TraceContextPropagation.cs" />
     <Compile Include="TraceKeys.cs" />
     <Compile Include="Codecs\Json\StreamWriterExtensions.cs" />
     <Compile Include="Codecs\ThriftCodec.cs" />
+    <Compile Include="TraceMeasure.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

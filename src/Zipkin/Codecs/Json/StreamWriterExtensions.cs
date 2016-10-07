@@ -6,7 +6,7 @@ namespace Zipkin.Codecs.Json
 	using System.Text;
 
 	// 
-	// https://github.com/openzipkin/zipkin/blob/master/zipkin/src/main/java/zipkin/internal/Buffer.java
+	// See: https://github.com/openzipkin/zipkin/blob/master/zipkin/src/main/java/zipkin/internal/Buffer.java
 	//
 	public static class StreamWriterExtensions
 	{

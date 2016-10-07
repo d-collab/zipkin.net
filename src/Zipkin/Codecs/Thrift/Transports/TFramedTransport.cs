@@ -15,7 +15,6 @@
 		private readonly MemoryStream _readBuffer = new MemoryStream(1024);
 		private readonly TTransport _innerTransport;
 
-
 		public TFramedTransport(TTransport innerTransport)
 		{
 			_innerTransport = innerTransport;
@@ -56,9 +55,6 @@
 
 			byte[] buf = _writeBuffer.GetBuffer();
 			int frameSize = (int) _writeBuffer.Position;
-//			int data_len = len - HeaderSize;
-//			if (data_len < 0)
-//				throw new System.InvalidOperationException(); // logic error actually
 
 			WriteFrameSizeToInnerTransport(frameSize);
 			

@@ -1,18 +1,47 @@
-﻿namespace Zipkin.Codecs
+﻿namespace Zipkin
 {
+	using System.Collections.Generic;
 	using System.IO;
-	using Thrift;
-	using Thrift.ModelSerializer;
+	using Codecs.Thrift;
+	using Codecs.Thrift.ModelSerializer;
 
-	public class ThriftCodec
+
+	public class ThriftCodec : Codec
 	{
-		public void Encode(Span span, Stream stream)
+		public ThriftCodec() : base("application/x-thrift")
 		{
-			var protocol = new ThriftProtocol(stream);
-
-			SpanSerializer.Write(span, protocol);
 		}
 
-		
+		public override void WriteSpans(IList<Span> spans, Stream stream)
+		{
+			var protocol = new ThriftProtocol(new TStreamTransport(stream));
+
+			SpanSerializer.WriteList(spans, protocol);
+
+			protocol.Flush();
+		}
+
+		public override void WriteSpan(Span span, Stream stream)
+		{
+			var protocol = new ThriftProtocol(new TStreamTransport(stream));
+
+			SpanSerializer.Write(span, protocol);
+
+			protocol.Flush();
+		}
+
+		public override IList<Span> ReadSpans(Stream stream)
+		{
+			var protocol = new ThriftProtocol(new TStreamTransport(stream));
+
+			return SpanSerializer.ReadList(protocol);
+		}
+
+		public override Span ReadSpan(Stream stream)
+		{
+			var protocol = new ThriftProtocol(new TStreamTransport(stream));
+
+			return SpanSerializer.Read(protocol);
+		}
 	}
 }

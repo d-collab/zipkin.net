@@ -10,21 +10,20 @@
 		private const int MaxRecursionDepth = 64;
 		private const uint VersionMask = 0xffff0000;
 		private const uint Version1 = 0x80010000;
-
-		private const bool _strictRead = false;
-		private const bool _strictWrite = true;
+		private const bool StrictRead = false;
+		private const bool StrictWrite = true;
 
 		private readonly ArrayPool<byte> _bufferPool;
 
 		private const int TempArrayLen = 1024;
 		private readonly byte[] _temp = new byte[TempArrayLen];
 
-		private readonly Stream _stream;
+		private readonly TTransport _stream;
 
 		private int _currentRecursionDepth;
 
 
-		public ThriftProtocol(Stream stream)
+		public ThriftProtocol(TTransport stream)
 		{
 			_stream = stream;
 

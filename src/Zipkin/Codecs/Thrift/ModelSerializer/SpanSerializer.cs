@@ -8,6 +8,26 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 
 	public static class SpanSerializer
 	{
+		public static IList<Span> ReadList(ThriftProtocol iprot)
+		{
+			iprot.IncrementRecursionDepth();
+			var list = new List<Span>();
+			try
+			{
+				var listInfo = iprot.ReadListBegin();
+				for (int i = 0; i < listInfo.Count; i++)
+				{
+					list.Add( SpanSerializer.Read(iprot) );
+				}
+				iprot.ReadListEnd();
+			}
+			finally
+			{
+				iprot.DecrementRecursionDepth();
+			}
+			return list;
+		}
+
 		public static Span Read(ThriftProtocol iprot)
 		{
 			iprot.IncrementRecursionDepth();
@@ -150,6 +170,20 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 				iprot.DecrementRecursionDepth();
 			}
 			return span;
+		}
+
+		public static void WriteList(IList<Span> spans, ThriftProtocol oprot)
+		{
+			oprot.IncrementRecursionDepth();
+			try
+			{
+				oprot.WriteListBegin(new TList { Count = spans.Count, ElementType = TType.Struct });
+				oprot.WriteListEnd();
+			}
+			finally
+			{
+				oprot.DecrementRecursionDepth();
+			}
 		}
 
 		public static void Write(Span span, ThriftProtocol oprot)

@@ -12,7 +12,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ABA8B196-F67E-4E04-85EF-7EC3AB358248}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
+		Zipkin.nuspec = Zipkin.nuspec
+		Zipkin.RabbitMq.nuspec = Zipkin.RabbitMq.nuspec
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zipkin.RabbitMq", "src\Zipkin.RabbitMq\Zipkin.RabbitMq.csproj", "{CA53D8FB-2BF2-42E9-82AD-A4CE544B1A18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QA", "QA", "{B3B97367-9244-4D78-93E7-55B8D7A83421}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,8 +38,16 @@ Global
 		{44F24708-C76A-47C5-BF31-6E383EB03010}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44F24708-C76A-47C5-BF31-6E383EB03010}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44F24708-C76A-47C5-BF31-6E383EB03010}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA53D8FB-2BF2-42E9-82AD-A4CE544B1A18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA53D8FB-2BF2-42E9-82AD-A4CE544B1A18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA53D8FB-2BF2-42E9-82AD-A4CE544B1A18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA53D8FB-2BF2-42E9-82AD-A4CE544B1A18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D59CD805-BE5E-4EAC-9F34-829C539F0920} = {B3B97367-9244-4D78-93E7-55B8D7A83421}
+		{44F24708-C76A-47C5-BF31-6E383EB03010} = {B3B97367-9244-4D78-93E7-55B8D7A83421}
 	EndGlobalSection
 EndGlobal

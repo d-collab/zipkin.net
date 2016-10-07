@@ -82,7 +82,7 @@
 		/// * The span is in-flight (ex not yet received a timestamp) 
 		/// * The span's start event was lost
 		/// </remarks>
-		public DateTimeOffset? Timestamp; //= DateTimeOffset.UtcNow;
+		public DateTimeOffset? Timestamp;
 
 		/// <summary>
 		/// Measurement in microseconds of the critical path, if known. 

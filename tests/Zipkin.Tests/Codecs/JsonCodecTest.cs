@@ -22,7 +22,7 @@
 			var stream = new MemoryStream();
 
 			// Act
-			new JsonCodec().Encode(new Span(traceId: 10951, name: "root", id: 15910)
+			new JsonCodec().WriteSpan(new Span(traceId: 10951, name: "root", id: 15910)
 			{
 				Timestamp = new DateTimeOffset(2016, 7, 16, 4, 40, 1, TimeSpan.Zero),
 			}, stream);
@@ -38,7 +38,7 @@
 			var stream = new MemoryStream();
 
 			// Act
-			new JsonCodec().Encode(new Span(traceId: 10951, name: "root", id: 15910)
+			new JsonCodec().WriteSpan(new Span(traceId: 10951, name: "root", id: 15910)
 			{
 				Timestamp = new DateTimeOffset(2016, 7, 16, 4, 40, 1, TimeSpan.Zero),
 
@@ -62,7 +62,7 @@
 			var stream = new MemoryStream();
 
 			// Act
-			new JsonCodec().Encode(new Span(traceId: 10951, name: "root", id: 15910)
+			new JsonCodec().WriteSpan(new Span(traceId: 10951, name: "root", id: 15910)
 			{
 				IsDebug = true,
 				ParentId = 10,

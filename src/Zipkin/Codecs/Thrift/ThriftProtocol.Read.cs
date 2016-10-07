@@ -26,7 +26,7 @@
 			}
 			else
 			{
-				if (_strictRead) throw new TProtocolException(TProtocolException.BAD_VERSION, "Missing version in readMessageBegin, old client?");
+				if (StrictRead) throw new TProtocolException(TProtocolException.BAD_VERSION, "Missing version in readMessageBegin, old client?");
 				message.name = ReadStringBody(size);
 				message.type = (TMessageType)ReadByte();
 				message.seqID = ReadI32();

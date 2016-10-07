@@ -21,7 +21,7 @@
 			return this.Log(new [] { message });
 		}
 
-		public Task<ResultCode> Log(params LogEntry[] messages)
+		public Task<ResultCode> Log(IList<LogEntry> messages)
 		{
 			_protocol.WriteMessageBegin(new TMessage("Log", TMessageType.Call, _seqid++));
 			var args = new LogOperationArgs()
