@@ -10,23 +10,49 @@ namespace Zipkin
 	public static class TraceContextPropagation
 	{
 		private const string TraceIdKey = "_zipkin_traceid";
+		private const string SpanIdKey = "_zipkin_spanid";
 
 		private static readonly AsyncLocal<Stack<Span>> LocalSpanStack = new AsyncLocal<Stack<Span>>();
+
+		public static void PushSpan(Span span)
+		{
+			EnsureStack();
+
+			LocalSpanStack.Value.Push(span);
+
+		}
+		public static void PopSpan(Span span)
+		{
+			EnsureStack();
+
+			var existing = LocalSpanStack.Value.Pop();
+		}
+
+		public static Span CurrentSpan
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			get
+			{
+				EnsureStack();
+				if (LocalSpanStack.Value.Count != 0)
+				{
+					return LocalSpanStack.Value.Peek();
+				}
+				return null;
+			}
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static void EnsureStack()
+		{
+			if (LocalSpanStack.Value == null)
+				LocalSpanStack.Value = new Stack<Span>();
+		}
 
 		public static bool IsWithinTrace
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get { return CurrentTraceId.HasValue; }
-		}
-
-		internal static long? CurrentTraceId
-		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get { return (long?) CallContext.LogicalGetData(TraceIdKey); }
-			set
-			{
-				CallContext.LogicalSetData(TraceIdKey, value);
-			}
+			get { return CurrentSpan != null; }
 		}
 
 		public static void PropagateTraceIdOnto(IDictionary<string, string> dictionary)
@@ -41,7 +67,9 @@ namespace Zipkin
 		{
 			if (IsWithinTrace)
 			{
-				dictionary[TraceIdKey] = CurrentTraceId.Value;
+				var span = CurrentSpan;
+				dictionary[TraceIdKey] = span.TraceId;
+				dictionary[SpanIdKey] = span.Id;
 			}
 		}
 
@@ -50,45 +78,23 @@ namespace Zipkin
 			return false;
 		}
 
-		public static bool TryObtainTraceIdFrom(IDictionary<string, object> dictionary)
+		public static bool TryObtainTraceIdFrom(IDictionary<string, object> dictionary, out long traceId, out long parentSpanId)
 		{
+			traceId = parentSpanId = 0;
+
 			object value;
 			if (dictionary.TryGetValue(TraceIdKey, out value))
 			{
-				CurrentTraceId = Convert.ToInt64(value);
+				traceId = Convert.ToInt64(value);
+
+				if (dictionary.TryGetValue(SpanIdKey, out value))
+				{
+					parentSpanId = Convert.ToInt64(value);
+				}
+
 				return true;
 			}
 			return false;
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void SetRootTrace(Span span)
-		{
-			CallContext.LogicalSetData(TraceIdKey, span.TraceId);
-
-			if (LocalSpanStack.Value == null)
-			{
-				LocalSpanStack.Value = new Stack<Span>();
-			}
-
-			LocalSpanStack.Value.Push(span);
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void RemoveRootTrace(Span span)
-		{
-			CallContext.FreeNamedDataSlot(TraceIdKey);
-
-			if (LocalSpanStack.Value != null && LocalSpanStack.Value.Count != 0)
-			{
-				var existing = LocalSpanStack.Value.Pop();
-
-				if (existing.Id != span.Id)
-				{
-					// Order is messed up
-					System.Diagnostics.Trace.Write("RemoveRootTrace: unexpected span in the context stack");
-				}
-			}
 		}
 	}
 }

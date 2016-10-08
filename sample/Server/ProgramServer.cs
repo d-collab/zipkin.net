@@ -11,7 +11,7 @@
 	{
 		static void Main(string[] args)
 		{
-			new Zipkin.FluentZipkinBootstrapper("server_sample")
+			new Zipkin.FluentZipkinBootstrapper("server-sample")
 				.ZipkinAt("localhost")
 				.WithSampleRate(1.0) // means log everything
 				.Start();
@@ -31,7 +31,7 @@
 
 				await channel.BasicConsume(ConsumeMode.ParallelWithBufferCopy, (delivery) =>
 				{
-					using (new StartServerTrace("rpc", delivery.properties.Headers))
+					using (new StartServerTrace("rpc2", delivery.properties.Headers))
 					{
 						Console.WriteLine("Received call");
 
@@ -41,6 +41,15 @@
 
 						var prop = channel.RentBasicProperties();
 						prop.CorrelationId = delivery.properties.CorrelationId;
+
+
+						using (var trace = new TraceChild("sql"))
+						{
+							trace.Span?.AnnotateWith(PredefinedTag.SqlQuery, "select ...");
+
+							Thread.Sleep(120);
+						}
+
 
 						channel.BasicPublishFast("", delivery.properties.ReplyTo, false, prop, Encoding.UTF8.GetBytes(content + " back to you!"));
 

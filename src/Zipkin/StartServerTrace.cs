@@ -4,19 +4,29 @@ namespace Zipkin
 	using System.Collections.Generic;
 	using System.Diagnostics;
 
+
 	public class StartServerTrace : IDisposable
 	{
 		private readonly Stopwatch _watch;
 
 		public StartServerTrace(string name, IDictionary<string, object> crossProcessBag)
 		{
-			if (TraceContextPropagation.TryObtainTraceIdFrom(crossProcessBag))
+			long traceId, parentSpanId;
+
+			if (TraceContextPropagation.TryObtainTraceIdFrom(crossProcessBag, out traceId, out parentSpanId))
 			{
 				_watch = Stopwatch.StartNew();
-				Span = new Span(TraceContextPropagation.CurrentTraceId.Value, name, RandomHelper.NewId());
-				Span.AnnotateWithTag(PredefinedTag.ServerRecv);
 
-				TraceContextPropagation.SetRootTrace(Span);
+				Span = new Span(traceId, name, RandomHelper.NewId())
+				{
+					ParentId = parentSpanId
+				}
+				.AnnotateWith(PredefinedTag.ServerRecv, name)
+				;
+
+				TraceContextPropagation.PushSpan(Span);
+
+				ZipkinConfig.Record(Span);
 			}
 		}
 
@@ -28,7 +38,7 @@ namespace Zipkin
 			{
 				Span.DurationInMicroseconds = _watch.ElapsedMilliseconds * 1000;
 
-				TraceContextPropagation.RemoveRootTrace(Span);
+				TraceContextPropagation.PopSpan(this.Span);
 
 				ZipkinConfig.Record(Span);
 			}

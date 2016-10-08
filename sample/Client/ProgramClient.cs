@@ -11,7 +11,7 @@
 	{
 		static void Main(string[] args)
 		{
-			new Zipkin.FluentZipkinBootstrapper("client_sample")
+			new Zipkin.FluentZipkinBootstrapper("client-sample")
 				.ZipkinAt("localhost")
 				.WithSampleRate(1.0) // means log everything
 				.Start();
@@ -29,7 +29,7 @@
 
 				var prop = channel.RentBasicProperties();
 
-				using (new StartClientTrace("client:op")) // Starts a root trace + span
+				using (new StartClientTrace("client-op")) // Starts a root trace + span
 				{
 					// Trace id set to be passed to the server side
 					TraceContextPropagation.PropagateTraceIdOnto(prop.Headers);

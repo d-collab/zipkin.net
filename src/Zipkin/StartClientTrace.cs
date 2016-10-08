@@ -18,7 +18,7 @@ namespace Zipkin
 				Span = new Span(RandomHelper.NewId(), name, RandomHelper.NewId());
 				Span.AnnotateWithTag(PredefinedTag.ClientSend);
 
-				TraceContextPropagation.SetRootTrace(Span);
+				TraceContextPropagation.PushSpan(Span);
 			}
 			else
 			{
@@ -34,7 +34,7 @@ namespace Zipkin
 			{
 				Span.DurationInMicroseconds = _watch.ElapsedMilliseconds * 1000;
 
-				TraceContextPropagation.RemoveRootTrace(Span);
+				TraceContextPropagation.PopSpan(Span);
 
 				ZipkinConfig.Record(Span);
 			}

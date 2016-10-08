@@ -89,6 +89,7 @@
     <Compile Include="ScribeSpanDispatcher.cs" />
     <Compile Include="SpanDispatcher.cs" />
     <Compile Include="StartServerTrace.cs" />
+    <Compile Include="TraceChild.cs" />
     <Compile Include="TraceContextPropagation.cs" />
     <Compile Include="TraceKeys.cs" />
     <Compile Include="Codecs\Json\StreamWriterExtensions.cs" />
