@@ -2,7 +2,7 @@ namespace Zipkin
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Diagnostics;
+	using Utils;
 
 	/// <summary>
 	/// Starts a server trace, which is contingent on an existing client trace. 
@@ -11,7 +11,7 @@ namespace Zipkin
 	/// </summary>
 	public class StartServerTrace : ITrace
 	{
-		private readonly Stopwatch _watch;
+		private readonly long _start;
 
 		public Span Span { get; private set; }
 
@@ -24,7 +24,7 @@ namespace Zipkin
 
 			if (TraceContextPropagation.TryObtainTraceIdFrom(crossProcessContext, out traceId, out parentSpanId))
 			{
-				_watch = Stopwatch.StartNew();
+				_start = NanoClock.Start();
 
 				Span = new Span(traceId, name, RandomHelper.NewId())
 				{
@@ -40,7 +40,7 @@ namespace Zipkin
 		{
 			if (Span != null)
 			{
-				Span.DurationInMicroseconds = _watch.ElapsedMilliseconds * 1000;
+				Span.DurationInMicroseconds = NanoClock.GetDuration(_start);
 
 				TraceContextPropagation.PopSpan(this.Span);
 

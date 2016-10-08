@@ -1,13 +1,15 @@
 namespace Zipkin
 {
+	using System;
 	using System.Diagnostics;
+	using Utils;
 
 	/// <summary>
 	/// Represents a local (within service) trace of an activity. 
 	/// </summary>
 	public class LocalTrace : ITrace
 	{
-		private readonly Stopwatch _watch;
+		private readonly long _start ;
 
 		public Span Span { get; private set; }
 
@@ -19,7 +21,7 @@ namespace Zipkin
 		{
 			if (TraceContextPropagation.IsWithinTrace)
 			{
-				_watch = Stopwatch.StartNew();
+				_start = NanoClock.Start();
 
 				var parentSpan = TraceContextPropagation.CurrentSpan;
 
@@ -36,7 +38,7 @@ namespace Zipkin
 		{
 			if (Span != null)
 			{
-				Span.DurationInMicroseconds = _watch.ElapsedMilliseconds * 1000;
+				Span.DurationInMicroseconds = NanoClock.GetDuration(_start);
 
 				TraceContextPropagation.PopSpan(this.Span);
 
@@ -45,10 +47,5 @@ namespace Zipkin
 				Span = null;
 			}
 		}
-	}
-
-	public static class NanoClock
-	{
-		
 	}
 }

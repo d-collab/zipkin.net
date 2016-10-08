@@ -2,6 +2,7 @@ namespace Zipkin
 {
 	using System;
 	using System.Diagnostics;
+	using Utils;
 
 	/// <summary>
 	/// Starts a trace. 
@@ -12,7 +13,7 @@ namespace Zipkin
 	/// </summary>
 	public class StartClientTrace : ITrace
 	{
-		private readonly Stopwatch _watch;
+		private readonly long _start;
 		private readonly bool _sampling;
 
 		public Span Span { get; private set; }
@@ -26,7 +27,8 @@ namespace Zipkin
 
 			if (_sampling)
 			{
-				_watch = Stopwatch.StartNew();
+				_start = NanoClock.Start();
+
 				Span = new Span(RandomHelper.NewId(), name, RandomHelper.NewId());
 				this.AnnotateWithTag(PredefinedTag.ClientSend);
 
@@ -38,7 +40,7 @@ namespace Zipkin
 		{
 			if (_sampling)
 			{
-				Span.DurationInMicroseconds = _watch.ElapsedMilliseconds * 1000;
+				Span.DurationInMicroseconds = NanoClock.GetDuration(_start);
 
 				TraceContextPropagation.PopSpan(Span);
 

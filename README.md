@@ -45,9 +45,9 @@ Just use the ZipkinBootstrapper:
 
 ```C#
 new Zipkin.ZipkinBootstrapper("my-service")
-			    .ZipkinAt("localhost") // where's the zipkin server?
-				  .WithSampleRate(0.1)   // 0.1 means trace 10% 
-				  .Start();
+			.ZipkinAt("localhost") // where's the zipkin server?
+			.WithSampleRate(0.1)   // 0.1 means trace 10% 
+			.Start();
 ```
 
 In addition, you may config 
@@ -59,9 +59,10 @@ In addition, you may config
 
 ### How to use it
 
-Zipkin's role is to receive ```Span``` information from different services, and assemble them for a nice display and making it queryable. To be considered the same trace, they need to share a Trace id. To have a proper hierarchical view, they need to use ParentId properly.
+Zipkin's role is to receive ```Span``` information from different services, and assemble them for a nice display, while making them queryable. 
+To be considered the same trace, they need to share a Trace id. To have a proper hierarchical view, they need to use ParentId properly.
 
-Therefore this is extremely useful for distributed system, but in order for it to work, your system needs to carry some information forward across service calls. 
+Therefore this is extremely useful for distributed system, but in order for it to work, your system needs to carry some information across service calls. 
 
 For example, 
 - if you use http to make Rpc calls, you'd like use extra http headers
@@ -72,7 +73,7 @@ In our tracing api it all starts with a ```StartClientTrace```, albeit "client s
 
 #### Tracing
 
-For all tracing types, the Span is submitted upon disposal of the instance, so it plays well with the C#'s using() idiom. 
+For all tracing types, the Span is submitted upon disposal of the instance, so it plays well with the C#'s ```using()``` idiom. 
 
 ##### StartClientTrace
 

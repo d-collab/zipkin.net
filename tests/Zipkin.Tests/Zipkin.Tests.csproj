@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Codecs\DateTimeOffsetExtensionsTest.cs" />
     <Compile Include="Codecs\JsonCodecTest.cs" />
+    <Compile Include="NanoClockTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreamWriterExtensionsTest.cs" />
   </ItemGroup>
