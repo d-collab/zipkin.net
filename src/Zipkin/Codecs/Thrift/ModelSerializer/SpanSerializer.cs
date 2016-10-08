@@ -177,7 +177,14 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 			oprot.IncrementRecursionDepth();
 			try
 			{
-				oprot.WriteListBegin(new TList { Count = spans.Count, ElementType = TType.Struct });
+				var count = spans.Count;
+				oprot.WriteListBegin(new TList { Count = count, ElementType = TType.Struct });
+
+				for (int i = 0; i < count; i++)
+				{
+					Write(spans[i], oprot);
+				}
+
 				oprot.WriteListEnd();
 			}
 			finally

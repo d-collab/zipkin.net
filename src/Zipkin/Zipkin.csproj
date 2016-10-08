@@ -79,6 +79,7 @@
     <Compile Include="Model\AnnotationType.cs" />
     <Compile Include="Model\BinaryAnnotation.cs" />
     <Compile Include="Model\SpanExtensions.cs" />
+    <Compile Include="RandomHelper.cs" />
     <Compile Include="Recorder.cs" />
     <Compile Include="Model\Endpoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,11 +88,12 @@
     <Compile Include="RestSpanDispatcher.cs" />
     <Compile Include="ScribeSpanDispatcher.cs" />
     <Compile Include="SpanDispatcher.cs" />
+    <Compile Include="StartServerTrace.cs" />
     <Compile Include="TraceContextPropagation.cs" />
     <Compile Include="TraceKeys.cs" />
     <Compile Include="Codecs\Json\StreamWriterExtensions.cs" />
     <Compile Include="Codecs\ThriftCodec.cs" />
-    <Compile Include="TraceMeasure.cs" />
+    <Compile Include="StartClientTrace.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -3,6 +3,20 @@
 	public static class AnnotationConstants
 	{
 		/// <summary>
+		/// The {BinaryAnnotation#value} of "lc" is the component or namespace of a local span.
+		/// 
+		/// Local Component("lc") supports three key features: flagging, query by service and filtering Span.name by namespace.
+		/// </summary>
+		public const string LOCAL_COMPONENT = "lc";
+
+		/// <summary>
+		/// When in an {Annotation#value}, this indicates when an error occurred. 
+		/// When in a {BinaryAnnotation#key}, the value is a human readable message associated with an error.
+		/// </summary>
+		public const string ERROR = "error";
+
+
+		/// <summary>
 		/// The client sent ("cs") a request to a server. There is only one send per
 		/// span. For example, if there's a transport error, each attempt can be logged
 		/// as a WIRE_SEND annotation.
@@ -105,6 +119,7 @@
 		/// </summary>
 		public const string SERVER_ADDR = "sa";
 
+		
 		/// <summary>
 		/// Zipkin's core annotations indicate when a client or server operation began or ended.
 		/// </summary>

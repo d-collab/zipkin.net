@@ -1,5 +1,7 @@
 namespace Zipkin.Codecs.Thrift.ModelSerializer
 {
+	using System;
+	using System.Text;
 	using Model;
 	using TypeSystem;
 
@@ -77,7 +79,41 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 			{
 				iprot.DecrementRecursionDepth();
 			}
-			annotation.InitWith(value);
+			// annotation.InitWith(value);
+
+			if (value != null)
+			{
+				switch (annotation.AnnotationType)
+				{
+					case AnnotationType.BOOL:
+						annotation.ValAsBool = value.Length == 1 && value[0] == 1;
+						break;
+					case AnnotationType.I16:
+						Array.Reverse(value);
+						annotation.ValAsI16 = BitConverter.ToInt16(value, 0);
+						break;
+					case AnnotationType.I32:
+						Array.Reverse(value);
+						annotation.ValAsI32 = BitConverter.ToInt32(value, 0);
+						break;
+					case AnnotationType.I64:
+						Array.Reverse(value);
+						annotation.ValAsI64 = BitConverter.ToInt64(value, 0);
+						break;
+					case AnnotationType.DOUBLE:
+						Array.Reverse(value);
+						annotation.ValAsDouble = BitConverter.ToDouble(value, 0);
+						break;
+					case AnnotationType.BYTES:
+						Array.Reverse(value);
+						annotation.ValAsBArray = value;
+						break;
+					case AnnotationType.STRING:
+						annotation.ValAsString = Encoding.UTF8.GetString(value, 0, value.Length);
+						break;
+				}
+			}
+
 			return annotation;
 		}
 

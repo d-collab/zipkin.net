@@ -26,6 +26,7 @@
 			TraceId = traceId;
 			Name = name ?? "unknown";
 			Id = id;
+			Timestamp = DateTimeOffset.UtcNow;
 		}
 
 		public Span()
@@ -75,7 +76,7 @@
 		/// </para>
 		/// 
 		/// <para>
-		/// There are two known edge - cases where this could be absent: both cases exist when a
+		/// There are two known edge-cases where this could be absent: both cases exist when a
 		/// collector receives a span in parts and a binary annotation precedes a timestamp. This is possible when.
 		/// </para>
 		/// 

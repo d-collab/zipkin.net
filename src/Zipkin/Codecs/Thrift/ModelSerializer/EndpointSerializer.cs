@@ -1,5 +1,6 @@
 ﻿namespace Zipkin.Codecs.Thrift.ModelSerializer
 {
+	using System;
 	using System.Net;
 	using Model;
 	using Thrift;
@@ -87,6 +88,10 @@
 					field.ID = 1;
 					oprot.WriteFieldBegin(field);
 					// oprot.WriteI32(endpoint.IPAddress.);
+
+					var address = endpoint.IPAddress.GetAddressBytes();
+					oprot.WriteI32(BitConverter.ToInt32(address, 0));
+
 					oprot.WriteFieldEnd();
 				}
 				if (endpoint.Port.HasValue)

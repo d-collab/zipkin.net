@@ -33,7 +33,6 @@ namespace Zipkin
 				BaseAddress = new Uri($"http://{endpoint}:{port}")
 			};
 
-			_client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(codec.ContentType));
 			_client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("curl", "7.30.0"));
 			_client.DefaultRequestHeaders.ConnectionClose = false;
 		}
@@ -45,7 +44,14 @@ namespace Zipkin
 
 			_codec.WriteSpans(spans, _stream);
 
-			await _client.PostAsync(_path, new StreamContent(_stream));
+			_stream.Position = 0;
+
+			var content = new StreamContent(_stream)
+			{
+				Headers = { ContentType = new MediaTypeHeaderValue(_codec.ContentType) }
+			};
+
+			await _client.PostAsync(_path, content);
 		}
 
 		public override void Dispose()
