@@ -4,13 +4,31 @@
 	using System.Runtime.CompilerServices;
 	using Model;
 
-	public static class SpanExtensions
+	public static class TraceExtensions
 	{
-		public static Span AnnotateWithTag(this Span source, PredefinedTag tag)
+		/// <summary>
+		/// A trace marked as Debug will always be traced, in other words, it
+		/// skips the sampling rate configuration. 
+		/// </summary>
+		public static ITrace MarkAsDebug(this ITrace source, bool isDebug)
 		{
-			source.Annotations = source.Annotations ?? new List<Annotation>();
+			if (source.Span == null) return source;
 
-			source.Annotations.Add(new Annotation()
+			source.Span.IsDebug = isDebug;
+
+			return source;
+		}
+
+		/// <summary>
+		/// Adds an annotation specified with the tag. 
+		/// </summary>
+		public static ITrace AnnotateWithTag(this ITrace source, PredefinedTag tag)
+		{
+			if (source.Span == null) return source;
+
+			source.Span.Annotations = source.Span.Annotations ?? new List<Annotation>();
+
+			source.Span.Annotations.Add(new Annotation()
 			{
 				Value = ToStringTag(tag),
 				Host = ZipkinConfig.ThisService
@@ -19,42 +37,52 @@
 			return source;
 		}
 
-		public static Span AnnotateWith(this Span source, PredefinedTag tag, string value)
+		/// <summary>
+		/// Sets a local component name to a trace (usually a local trace)
+		/// </summary>
+		public static ITrace SetLocalComponentName(this ITrace source, string name)
+		{
+			source.AnnotateWith(new BinaryAnnotation(AnnotationConstants.LOCAL_COMPONENT, name));
+
+			return source;
+		}
+
+		public static ITrace AnnotateWith(this ITrace source, PredefinedTag tag, string value)
 		{
 			source.AnnotateWith(new BinaryAnnotation(ToStringTag(tag), value));
 
 			return source;
 		}
 
-		public static Span AnnotateWith(this Span source, string key, string value)
+		public static ITrace AnnotateWith(this ITrace source, string key, string value)
 		{
 			source.AnnotateWith(new BinaryAnnotation(key, value));
 
 			return source;
 		}
 
-		public static Span AnnotateWith(this Span source, PredefinedTag tag, int value)
+		public static ITrace AnnotateWith(this ITrace source, PredefinedTag tag, int value)
 		{
 			source.AnnotateWith(new BinaryAnnotation(ToStringTag(tag), value));
 
 			return source;
 		}
 
-		public static Span AnnotateWith(this Span source, string key, int value)
+		public static ITrace AnnotateWith(this ITrace source, string key, int value)
 		{
 			source.AnnotateWith(new BinaryAnnotation(key, value));
 
 			return source;
 		}
 
-		public static Span AnnotateWith(this Span source, PredefinedTag tag, bool value)
+		public static ITrace AnnotateWith(this ITrace source, PredefinedTag tag, bool value)
 		{
 			source.AnnotateWith(new BinaryAnnotation(ToStringTag(tag), value));
 
 			return source;
 		}
 
-		public static Span AnnotateWith(this Span source, string key, bool value)
+		public static ITrace AnnotateWith(this ITrace source, string key, bool value)
 		{
 			source.AnnotateWith(new BinaryAnnotation(key, value));
 
@@ -62,17 +90,19 @@
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void AnnotateWith(this Span source, BinaryAnnotation binaryAnnotation)
+		public static void AnnotateWith(this ITrace source, BinaryAnnotation binaryAnnotation)
 		{
-			source.BinaryAnnotations = source.BinaryAnnotations ?? new List<BinaryAnnotation>();
+			if (source.Span == null) return;
+
+			source.Span.BinaryAnnotations = source.Span.BinaryAnnotations ?? new List<BinaryAnnotation>();
 
 			if (binaryAnnotation.Host == null)
 				binaryAnnotation.Host = ZipkinConfig.ThisService;
 
-			source.BinaryAnnotations.Add(binaryAnnotation);
+			source.Span.BinaryAnnotations.Add(binaryAnnotation);
 		}
 
-		// [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static string ToStringTag(PredefinedTag tag)
 		{
 			switch (tag)
@@ -116,6 +146,10 @@
 				case PredefinedTag.LocalComponent:
 					return AnnotationConstants.SERVER_ADDR;
 
+				case PredefinedTag.Error:
+					return AnnotationConstants.ERROR;
+
+
 				case PredefinedTag.HttpHost:
 					return CommonKeys.HttpHost;
 
@@ -132,28 +166,5 @@
 					return string.Empty;
 			}
 		}
-	}
-
-	public enum PredefinedTag
-	{
-		HttpHost,
-		HttpMethod,
-		HttpPath,
-		SqlQuery,
-
-
-		ClientSend,
-		ClientRecv,
-		ServerSend,
-		ServerRecv,
-		WireSend,
-		WireRecv,
-		ClientSendFragment,
-		ClientRecvFragment,
-		ServerSendFragment,
-		ServerRecvFragment, 
-		ClientAddr,
-		ServerAddr,
-		LocalComponent
 	}
 }

@@ -73,12 +73,14 @@
     <Compile Include="Codecs\Thrift\TypeSystem\TList.cs" />
     <Compile Include="Codecs\Thrift\TypeSystem\TMap.cs" />
     <Compile Include="Codecs\Thrift\TypeSystem\TStruct.cs" />
-    <Compile Include="FluentZipkinBootstrapper.cs" />
+    <Compile Include="ZipkinBootstrapper.cs" />
     <Compile Include="Model\Annotation.cs" />
     <Compile Include="Model\AnnotationConstants.cs" />
     <Compile Include="Model\AnnotationType.cs" />
     <Compile Include="Model\BinaryAnnotation.cs" />
-    <Compile Include="Model\SpanExtensions.cs" />
+    <Compile Include="Tracers\ITrace.cs" />
+    <Compile Include="Tracers\PredefinedTag.cs" />
+    <Compile Include="Tracers\TraceExtensions.cs" />
     <Compile Include="RandomHelper.cs" />
     <Compile Include="Recorder.cs" />
     <Compile Include="Model\Endpoint.cs" />
@@ -88,13 +90,13 @@
     <Compile Include="RestSpanDispatcher.cs" />
     <Compile Include="ScribeSpanDispatcher.cs" />
     <Compile Include="SpanDispatcher.cs" />
-    <Compile Include="StartServerTrace.cs" />
-    <Compile Include="TraceChild.cs" />
+    <Compile Include="Tracers\StartServerTrace.cs" />
+    <Compile Include="Tracers\LocalTrace.cs" />
     <Compile Include="TraceContextPropagation.cs" />
-    <Compile Include="TraceKeys.cs" />
+    <Compile Include="Tracers\CommonKeys.cs" />
     <Compile Include="Codecs\Json\StreamWriterExtensions.cs" />
     <Compile Include="Codecs\ThriftCodec.cs" />
-    <Compile Include="StartClientTrace.cs" />
+    <Compile Include="Tracers\StartClientTrace.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

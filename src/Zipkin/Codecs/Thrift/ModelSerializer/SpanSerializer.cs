@@ -198,9 +198,9 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 			oprot.IncrementRecursionDepth();
 			try
 			{
-				TStruct struc = new TStruct(/*"Span"*/);
+				var struc = new TStruct(/*"Span"*/);
 				oprot.WriteStructBegin(struc);
-				TField field = new TField();
+				var field = new TField();
 				if (span.TraceId != 0L)
 				{
 //					field.Name = "trace_id";
@@ -289,7 +289,7 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 					oprot.WriteI64(span.Timestamp.Value.ToNixTimeMicro());
 					oprot.WriteFieldEnd();
 				}
-				if (span.DurationInMicroseconds != null)
+				if (span.DurationInMicroseconds.HasValue)
 				{
 //					field.Name = "duration";
 					field.Type = TType.I64;

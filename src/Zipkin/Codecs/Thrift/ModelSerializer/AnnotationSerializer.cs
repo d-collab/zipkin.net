@@ -78,7 +78,7 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 				TStruct struc = new TStruct(/*"Annotation"*/);
 				oprot.WriteStructBegin(struc);
 				TField field = new TField();
-				if (annotation.Timestamp != DateTimeOffset.MinValue)
+				// if (annotation.Timestamp != DateTimeOffset.MinValue)
 				{
 //					field.Name = "timestamp";
 					field.Type = TType.I64;

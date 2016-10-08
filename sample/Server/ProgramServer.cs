@@ -1,6 +1,7 @@
 ﻿namespace Server
 {
 	using System;
+	using System.Net;
 	using System.Text;
 	using System.Threading;
 	using System.Threading.Tasks;
@@ -11,7 +12,7 @@
 	{
 		static void Main(string[] args)
 		{
-			new Zipkin.FluentZipkinBootstrapper("server-sample")
+			new Zipkin.ZipkinBootstrapper("server-sample", IPAddress.Loopback, 1000)
 				.ZipkinAt("localhost")
 				.WithSampleRate(1.0) // means log everything
 				.Start();
@@ -43,10 +44,8 @@
 						prop.CorrelationId = delivery.properties.CorrelationId;
 
 
-						using (var trace = new TraceChild("sql"))
+						using (new LocalTrace("sql").AnnotateWith(PredefinedTag.SqlQuery, "select ..."))
 						{
-							trace.Span?.AnnotateWith(PredefinedTag.SqlQuery, "select ...");
-
 							Thread.Sleep(120);
 						}
 

@@ -1,14 +1,21 @@
 namespace Zipkin
 {
-	using System;
 	using System.Diagnostics;
 
-
-	public class TraceChild : IDisposable
+	/// <summary>
+	/// Represents a local (within service) trace of an activity. 
+	/// </summary>
+	public class LocalTrace : ITrace
 	{
 		private readonly Stopwatch _watch;
 
-		public TraceChild(string name)
+		public Span Span { get; private set; }
+
+		/// <summary>
+		/// Give it a short lower-case description of the activity
+		/// </summary>
+		/// <param name="name"></param>
+		public LocalTrace(string name)
 		{
 			if (TraceContextPropagation.IsWithinTrace)
 			{
@@ -22,12 +29,8 @@ namespace Zipkin
 				};
 
 				TraceContextPropagation.PushSpan(this.Span);
-
-				ZipkinConfig.Record(Span);
 			}
 		}
-
-		public Span Span;
 
 		public void Dispose()
 		{
@@ -38,8 +41,14 @@ namespace Zipkin
 				TraceContextPropagation.PopSpan(this.Span);
 
 				ZipkinConfig.Record(Span);
+
+				Span = null;
 			}
-			Span = null;
 		}
+	}
+
+	public static class NanoClock
+	{
+		
 	}
 }

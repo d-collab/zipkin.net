@@ -5,7 +5,7 @@
 		/// <summary>
 		/// The {BinaryAnnotation#value} of "lc" is the component or namespace of a local span.
 		/// 
-		/// Local Component("lc") supports three key features: flagging, query by service and filtering Span.name by namespace.
+		/// Local Component ("lc") supports three key features: flagging, query by service and filtering Span.name by namespace.
 		/// </summary>
 		public const string LOCAL_COMPONENT = "lc";
 

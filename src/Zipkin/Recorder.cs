@@ -3,9 +3,9 @@
 	using System;
 	using Model;
 
-	// thrift:9410
-	// : Tomcat started on port(s): 9411 (http)
-
+	/// <summary>
+	/// Abstraction on strategy to record the Spans collected. 
+	/// </summary>
 	public abstract class Recorder : IDisposable
 	{
 		public abstract void Record(params Span[] spans);

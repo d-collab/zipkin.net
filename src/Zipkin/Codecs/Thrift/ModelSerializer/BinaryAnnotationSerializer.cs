@@ -122,9 +122,9 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 			oprot.IncrementRecursionDepth();
 			try
 			{
-				TStruct struc = new TStruct(/*"BinaryAnnotation"*/);
+				var struc = new TStruct(/*"BinaryAnnotation"*/);
 				oprot.WriteStructBegin(struc);
-				TField field = new TField();
+				var field = new TField();
 				if (annotation.Key != null)
 				{
 //					field.Name = "key";
@@ -140,6 +140,7 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 					field.Type = TType.String;
 					field.ID = 2;
 					oprot.WriteFieldBegin(field);
+
 					switch (annotation.AnnotationType)
 					{
 						case AnnotationType.BOOL:
@@ -169,6 +170,7 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 							oprot.WriteString(annotation.ValAsString);
 							break;
 					}
+
 					// oprot.WriteBinary(annotation.Value);
 					oprot.WriteFieldEnd();
 				}
