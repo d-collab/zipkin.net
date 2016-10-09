@@ -40,9 +40,9 @@
 			TMessage msg = _protocol.ReadMessageBegin();
 			if (msg.type == TMessageType.Exception)
 			{
-				TApplicationException x = TApplicationException.Read(_protocol);
+				var ex = TApplicationException.Read(_protocol);
 				_protocol.ReadMessageEnd();
-				throw x;
+				throw ex;
 			}
 			var result = new LogOperationResult();
 			result.Read(_protocol);

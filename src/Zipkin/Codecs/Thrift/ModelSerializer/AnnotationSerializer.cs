@@ -12,11 +12,10 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 			var annotation = new Annotation();
 			try
 			{
-				TField field;
 				iprot.ReadStructBegin();
 				while (true)
 				{
-					field = iprot.ReadFieldBegin();
+					var field = iprot.ReadFieldBegin();
 					if (field.Type == TType.Stop)
 					{
 						break;

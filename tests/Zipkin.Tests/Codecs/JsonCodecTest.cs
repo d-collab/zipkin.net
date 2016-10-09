@@ -6,6 +6,7 @@
 	using System.Net;
 	using System.Text;
 	using Codecs;
+	using FluentAssertions;
 	using Model;
 	using NUnit.Framework;
 
@@ -28,7 +29,9 @@
 			}, stream);
 
 			// Assert
-			Console.WriteLine(Encoding.UTF8.GetString(stream.GetBuffer(), 0, (int)stream.Length));
+			Encoding.UTF8.GetString(stream.GetBuffer(), 0, (int)stream.Length)
+				.Should()
+				.Be("﻿{\"traceId\":\"0000000000002ac7\",\"id\":\"0000000000003e26\",\"name\":\"root\",\"timestamp\":1468644001000000}");
 		}
 
 		[Test]
@@ -50,9 +53,9 @@
 			}, stream);
 
 			// Assert
-			Console.WriteLine(Encoding.UTF8.GetString(stream.GetBuffer(), 0, (int)stream.Length));
-
-			// Assert.AreEqual(@"﻿", Encoding.UTF8.GetString(stream.GetBuffer(), 0, (int)stream.Length));
+			Encoding.UTF8.GetString(stream.GetBuffer(), 0, (int)stream.Length)
+				.Should()
+				.Be("﻿{\"traceId\":\"0000000000002ac7\",\"id\":\"0000000000003e26\",\"name\":\"root\",\"timestamp\":1468644001000000,\"annotations\":[{\"timestamp\":1475621352000000,\"value\":\"something\",\"endpoint\":{\"serviceName\":\"hellosvc\",\"ipv4\":\"127.0.0.1\"}},{\"timestamp\":1475621353000000,\"value\":\"no host\"}]}");
 		}
 
 		[Test]

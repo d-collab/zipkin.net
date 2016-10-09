@@ -17,7 +17,7 @@ namespace Zipkin.Tests
 
 			var duration = NanoClock.GetDuration(start);
 
-			duration.Should().BeInRange(100000, 101000);
+			duration.Should().BeInRange(100000, 105000);
 		}
 	}
 }

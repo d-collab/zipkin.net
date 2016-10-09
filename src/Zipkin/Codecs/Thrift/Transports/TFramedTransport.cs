@@ -2,7 +2,6 @@
 {
 	using System.IO;
 	using System.Runtime.CompilerServices;
-	using TypeSystem;
 
 
 	public class TFramedTransport : TTransport

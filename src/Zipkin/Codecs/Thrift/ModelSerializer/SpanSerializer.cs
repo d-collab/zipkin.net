@@ -245,10 +245,9 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 					oprot.WriteFieldBegin(field);
 					{
 						oprot.WriteListBegin(new TList(TType.Struct, span.Annotations.Count));
-						foreach (Annotation annotation in span.Annotations)
+						foreach (var annotation in span.Annotations)
 						{
 							AnnotationSerializer.Write(annotation, oprot);
-							// _iter6.Write(oprot);
 						}
 						oprot.WriteListEnd();
 					}

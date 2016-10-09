@@ -16,11 +16,10 @@
 			iprot.IncrementRecursionDepth();
 			try
 			{
-				TField field;
 				iprot.ReadStructBegin();
 				while (true)
 				{
-					field = iprot.ReadFieldBegin();
+					var field = iprot.ReadFieldBegin();
 					if (field.Type == TType.Stop)
 					{
 						break;

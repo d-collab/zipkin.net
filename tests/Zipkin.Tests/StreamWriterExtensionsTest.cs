@@ -1,6 +1,5 @@
 namespace Zipkin.Tests
 {
-	using System;
 	using System.IO;
 	using System.Text;
 	using Codecs;

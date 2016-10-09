@@ -18,70 +18,41 @@
 				.WithSampleRate(1.0) // means log everything
 				.Start();
 
-//			const string rpc_exchange = "zipkin_test_exchange";
-//
-//			var task = new Task<Task<bool>>(async (_) =>
-//			{
-//				var conn = await RabbitMqNext.ConnectionFactory.Connect("localhost");
-//				var channel = await conn.CreateChannel();
-//
-//				await channel.ExchangeDeclare(rpc_exchange, "direct", durable: false, autoDelete: false, arguments: null, waitConfirmation: true);
-//
-//				var rpc = await channel.CreateRpcHelper(ConsumeMode.ParallelWithBufferCopy, 1000 * 60 * 5);
-//
-//				var prop = channel.RentBasicProperties();
-//
-//				using (new StartClientTrace("client-op")) // Starts a root trace + span
-//				{
-//					// Trace id set to be passed to the server side
-//					TraceContextPropagation.PropagateTraceIdOnto(prop.Headers);
-//
-//					Console.WriteLine("Sending RPC call");
-//
-//					var result = await rpc.Call(rpc_exchange, "rpc", prop, Encoding.UTF8.GetBytes("hello world!"));
-//
-//					Console.WriteLine("Reply received");
-//				}
-//
-//				conn.Dispose();
-//
-//				return true;
-//			}, null);
-//			task.Start();
-//			task.Result.Wait();
+			const string rpc_exchange = "zipkin_test_exchange";
 
-
-			using (new StartClientTrace("client-op")) // Starts a root trace + span
+			var task = new Task<Task<bool>>(async (_) =>
 			{
-				var crossProcessBag = new Dictionary<string,object>();
-				TraceContextPropagation.PropagateTraceIdOnto(crossProcessBag);
+				var conn = await RabbitMqNext.ConnectionFactory.Connect("localhost");
+				var channel = await conn.CreateChannel();
 
-				Thread.Sleep(20);
+				await channel.ExchangeDeclare(rpc_exchange, "direct", durable: false, autoDelete: false, arguments: null, waitConfirmation: true);
 
-				using (new StartServerTrace("server-op", crossProcessBag).SetLocalComponentName("fake-server"))
+				var rpc = await channel.CreateRpcHelper(ConsumeMode.ParallelWithBufferCopy, 1000 * 60 * 5);
+
+				var prop = channel.RentBasicProperties();
+
+				using (new StartClientTrace("client-op")) // Starts a root trace + span
 				{
-					using (new LocalTrace("op1").AnnotateWith(PredefinedTag.SqlQuery, "select * from  ..."))
-					{
-						Thread.Sleep(70);
-					}
+					// Trace id set to be passed to the server side
+					TraceContextPropagation.PropagateTraceIdOnto(prop.Headers);
 
-					using (var trace = new LocalTrace("op2"))
-					{
-						Thread.Sleep(90);
+					Console.WriteLine("Sending RPC call");
 
-						trace.AnnotateWith(PredefinedTag.Error, "error message"); // mark it with an error
-					}
+					var result = await rpc.Call(rpc_exchange, "rpc", prop, Encoding.UTF8.GetBytes("hello world!"));
 
-					using (new LocalTrace("op2").AnnotateWithTag(PredefinedTag.ServerSend))
-					{
-						Thread.Sleep(90);
-					}
-
+					Console.WriteLine("Reply received");
 				}
-			}
 
-			// Thread.Sleep(1000);
-			Thread.CurrentThread.Join();
+				conn.Dispose();
+
+				return true;
+			}, null);
+			task.Start();
+			task.Result.Wait();
+
+
+			Thread.Sleep(1000);
+			// Thread.CurrentThread.Join();
 
 			Console.WriteLine("Goodbye from client!");
 		}

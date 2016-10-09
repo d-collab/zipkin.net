@@ -97,7 +97,7 @@ namespace Zipkin
 			traceId = parentSpanId = 0;
 
 			string value;
-			if (dictionary.TryGetValue(TraceIdKey, out value))
+			if (dictionary != null && dictionary.TryGetValue(TraceIdKey, out value))
 			{
 				traceId = Convert.ToInt64(value);
 
@@ -117,7 +117,7 @@ namespace Zipkin
 			traceId = parentSpanId = 0;
 
 			object value;
-			if (dictionary.TryGetValue(TraceIdKey, out value))
+			if (dictionary != null && dictionary.TryGetValue(TraceIdKey, out value))
 			{
 				traceId = Convert.ToInt64(value);
 
@@ -129,12 +129,16 @@ namespace Zipkin
 			return traceId != 0 && parentSpanId != 0;
 		}
 
-
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static void EnsureStack()
 		{
 			if (LocalSpanStack.Value == null)
 				LocalSpanStack.Value = new Stack<Span>();
+		}
+
+		internal static void Reset()
+		{
+			LocalSpanStack.Value = new Stack<Span>();
 		}
 	}
 }

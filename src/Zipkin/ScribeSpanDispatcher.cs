@@ -23,13 +23,11 @@ namespace Zipkin
 	{
 		private readonly string _hostname;
 		private readonly int _port;
-		private ScribeService _scribeService;
+		private readonly ScribeSpanConverter _converter = new ScribeSpanConverter();
 
-		private readonly ThriftCodec _thriftCodec = new ThriftCodec();
-
-		private readonly MemoryStream _stream = new MemoryStream();
-		private TcpClient _tcpClient;
-		private TFramedTransport _frame;
+		private readonly ScribeService _scribeService;
+		private readonly TcpClient _tcpClient;
+		private readonly TFramedTransport _frame;
 
 		public ScribeSpanDispatcher(string hostname, int port)
 		{
@@ -45,34 +43,48 @@ namespace Zipkin
 
 		public override async Task DispatchSpans(IList<Span> spans)
 		{
-			var logEntries = new List<LogEntry>(spans.Count);
-
-			for (int i = 0; i < spans.Count; i++)
-			{
-				_stream.Position = 0;
-				_stream.SetLength(0);
-
-				var span = spans[i];
-				_thriftCodec.WriteSpan(span, _stream);
-
-				var messageContent = ToBase64(_stream);
-
-				logEntries[i] = new LogEntry() { message = messageContent };
-			}
+			var logEntries = _converter.ToLogEntries(spans);
 
 			await _scribeService.Log(logEntries);
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static string ToBase64(MemoryStream stream)
-		{
-			return Convert.ToBase64String(stream.GetBuffer(), 0, (int) stream.Length);
 		}
 
 		public override void Dispose()
 		{
 			_frame.Dispose();
 			_tcpClient.Dispose();
+		}
+
+		public class ScribeSpanConverter
+		{
+			private readonly ThriftCodec _thriftCodec = new ThriftCodec();
+
+			private readonly MemoryStream _stream = new MemoryStream();
+
+			public IList<LogEntry> ToLogEntries(IList<Span> spans)
+			{
+				var logEntries = new List<LogEntry>(capacity: spans.Count);
+
+				for (int i = 0; i < spans.Count; i++)
+				{
+					_stream.Position = 0;
+					_stream.SetLength(0);
+
+					var span = spans[i];
+					_thriftCodec.WriteSpan(span, _stream);
+
+					var messageContent = ToBase64(_stream);
+
+					logEntries.Add(new LogEntry { message = messageContent });
+				}
+
+				return logEntries;
+			}
+
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			private static string ToBase64(MemoryStream stream)
+			{
+				return Convert.ToBase64String(stream.GetBuffer(), 0, (int)stream.Length);
+			}
 		}
 	}
 }

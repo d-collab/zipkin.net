@@ -30,7 +30,7 @@ namespace Zipkin
 				{
 					ParentId = parentSpanId
 				};
-				this.AnnotateWith(PredefinedTag.ServerRecv, name);
+				this.AnnotateWithTag(PredefinedTag.ServerRecv);
 
 				TraceContextPropagation.PushSpan(Span);
 			}

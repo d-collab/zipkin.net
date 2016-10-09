@@ -21,7 +21,7 @@ namespace Zipkin
 	/// rewriting, like "/api/v1/myresource" vs "/myresource. Via the host field,
 	/// you can see the different points of view, which often help in debugging.
 	/// </remarks>
-	public class BinaryAnnotation
+	public class BinaryAnnotation : IEquatable<BinaryAnnotation>
 	{
 		public BinaryAnnotation(string key, string value) : this(key, AnnotationType.STRING)
 		{
@@ -97,6 +97,42 @@ namespace Zipkin
 		public double ValAsDouble;
 		public bool ValAsBool;
 
-		
+
+		#region Equality - for unit test
+
+		bool IEquatable<BinaryAnnotation>.Equals(BinaryAnnotation other)
+		{
+			return !ReferenceEquals(other, null) &&
+				   other.Key == this.Key &&
+				   other.Host == this.Host &&
+				   other.AnnotationType == this.AnnotationType &&
+			       other.ValAsString == this.ValAsString &&
+			       other.ValAsI16 == this.ValAsI16 &&
+			       other.ValAsI32 == this.ValAsI32 &&
+			       other.ValAsI64 == this.ValAsI64 &&
+			       Math.Abs(other.ValAsDouble - this.ValAsDouble) < 0.0001 &&
+				   other.ValAsBool == this.ValAsBool; // Skipping byte array comparison
+		}
+
+		public static bool operator ==(BinaryAnnotation lhs, BinaryAnnotation rhs)
+		{
+			return (ReferenceEquals(lhs, null) && ReferenceEquals(rhs, null)) ||
+					!ReferenceEquals(lhs, null) &&
+					!ReferenceEquals(rhs, null) &&
+					lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(BinaryAnnotation lhs, BinaryAnnotation rhs)
+		{
+			return !(lhs == rhs);
+		}
+
+		public override bool Equals(object obj)
+		{
+			return (this as IEquatable<BinaryAnnotation>).Equals(obj as BinaryAnnotation);
+		}
+
+		#endregion
+
 	}
 }
