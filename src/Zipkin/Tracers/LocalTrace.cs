@@ -20,7 +20,7 @@ namespace Zipkin
 		{
 			if (TraceContextPropagation.IsWithinTrace)
 			{
-				_start = NanoClock.Start();
+				_start = TickClock.Start();
 
 				var parentSpan = TraceContextPropagation.CurrentSpan;
 
@@ -37,7 +37,7 @@ namespace Zipkin
 		{
 			if (Span != null)
 			{
-				Span.DurationInMicroseconds = NanoClock.GetDuration(_start);
+				Span.DurationInMicroseconds = TickClock.GetDuration(_start);
 
 				TraceContextPropagation.PopSpan(this.Span);
 

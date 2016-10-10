@@ -2,6 +2,7 @@ namespace Zipkin
 {
 	using System;
 	using System.Configuration;
+	using System.Globalization;
 	using System.Net;
 	using System.Threading;
 	using Utils;
@@ -61,7 +62,7 @@ namespace Zipkin
 			//< add key="ZipkinServiceName" value="pit" />
 
 			var serviceName = ConfigurationManager.AppSettings["ZipkinServiceName"];
-			var sampleRate = Convert.ToDouble(ConfigurationManager.AppSettings["ZipkinSampleRate"] ?? "0.0");
+			var sampleRate = double.Parse(ConfigurationManager.AppSettings["ZipkinSampleRate"] ?? "0.0", CultureInfo.InvariantCulture);
 			var zipkinServer = ConfigurationManager.AppSettings["ZipkinServerName"];
 
 			if (serviceName == null)  throw new Exception("Missing configuration entry: 'ZipkinServiceName' under appsettings, which should define this service's name");

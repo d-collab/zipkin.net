@@ -28,7 +28,7 @@ namespace Zipkin
 
 			if (_isSampling)
 			{
-				_start = NanoClock.Start();
+				_start = TickClock.Start();
 
 				Span = new Span(RandomHelper.NewId(), name, RandomHelper.NewId());
 				this.TimeAnnotateWith(PredefinedTag.ClientSend);
@@ -47,7 +47,7 @@ namespace Zipkin
 			if (_isSampling)
 			{
 				if (!_skipDuration)
-					Span.DurationInMicroseconds = NanoClock.GetDuration(_start);
+					Span.DurationInMicroseconds = TickClock.GetDuration(_start);
 
 				TraceContextPropagation.PopSpan(Span);
 

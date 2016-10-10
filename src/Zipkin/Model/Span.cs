@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using Utils;
 
 
 	/// <summary>
@@ -112,5 +113,22 @@
 		/// True is a request to store this span even if it overrides sampling policy.
 		/// </summary>
 		public bool IsDebug;
+
+		/// <summary>
+		/// Returns "almost" a clone. The span ID will *NOT* be the same
+		/// </summary>
+		/// <returns></returns>
+		public Span Clone()
+		{
+			return new Span()
+			{
+				Id = RandomHelper.NewId(),
+				TraceId = this.TraceId, 
+				Name = this.Name,
+				ParentId = this.ParentId,
+				Timestamp = this.Timestamp,
+				IsDebug = this.IsDebug
+			};
+		}
 	}
 }

@@ -114,6 +114,7 @@ The semantically known kinds can be found at StandardAnnotationKeys.cs, while ot
 
 You're free to define your own.
 
+API-wise, use TraceExtensions.TimeAnnotateWith and overloads.
 
 ##### Adding information
 
@@ -121,6 +122,7 @@ This is done with ```BinaryAnnotation``` on the ```Span```. It differs from ```A
 
 Use it to capture sql, http information, etc.
 
+API-wise, use TraceExtensions.AnnotateWith and overloads.
 
 #### Crossing process boundaries
 

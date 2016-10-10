@@ -11,11 +11,11 @@ namespace Zipkin.Tests
 		[Test]
 		public void GetDuration_returns_time_in_microseconds()
 		{
-			var start = NanoClock.Start();
+			var start = TickClock.Start();
 
 			Thread.Sleep(100);
 
-			var duration = NanoClock.GetDuration(start);
+			var duration = TickClock.GetDuration(start);
 
 			duration.Should().BeInRange(100000, 105000);
 		}

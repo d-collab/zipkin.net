@@ -1,6 +1,9 @@
 namespace Zipkin
 {
-	public enum PredefinedTag
+	/// <summary>
+	/// Union of standard + common custom 
+	/// </summary>
+	public enum PredefinedTag 
 	{
 		HttpHost,
 		HttpMethod,

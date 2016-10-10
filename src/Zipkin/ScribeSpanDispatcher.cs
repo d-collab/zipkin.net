@@ -21,6 +21,8 @@ namespace Zipkin
 	/// </remarks>
 	public class ScribeSpanDispatcher : SpanDispatcher
 	{
+		// TODO: needs to be more robust
+
 		private readonly string _hostname;
 		private readonly int _port;
 		private readonly ScribeSpanConverter _converter = new ScribeSpanConverter();

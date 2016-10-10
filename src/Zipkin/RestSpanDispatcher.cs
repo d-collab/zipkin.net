@@ -14,6 +14,8 @@ namespace Zipkin
 	/// </summary>
 	public class RestSpanDispatcher : SpanDispatcher
 	{
+		// TODO: needs to be more robust
+
 		private readonly HttpClient _client;
 		private readonly Codec _codec;
 		private readonly string _path;

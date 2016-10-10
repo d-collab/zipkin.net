@@ -4,6 +4,7 @@ namespace Zipkin
 	using System.Collections.Generic;
 	using System.Runtime.CompilerServices;
 	using System.Threading;
+	using Utils;
 
 	/// <summary>
 	/// Used to propagate and recover trace information 
@@ -136,6 +137,42 @@ namespace Zipkin
 			return traceId != 0 && parentSpanId != 0;
 		}
 
+		public static TraceInfo CaptureCurrentTrace()
+		{
+			var span = CurrentSpan;
+
+			if (span != null)
+			{
+				return new TraceInfo
+				{
+					span = span.Clone()
+				};
+			}
+
+			return new TraceInfo();
+		}
+
+		public static void ApplyCaptured(TraceInfo capturedContext)
+		{
+			if (capturedContext.span != null)
+			{
+				capturedContext.span.DurationInMicroseconds = TickClock.Start();
+
+				PushSpan(capturedContext.span);
+			}
+		}
+		public static void UndoApply(TraceInfo capturedContext)
+		{
+			if (capturedContext.span != null)
+			{
+				PopSpan(capturedContext.span);
+
+				capturedContext.span.DurationInMicroseconds = TickClock.GetDuration(capturedContext.span.DurationInMicroseconds.Value);
+
+				ZipkinConfig.Record(capturedContext.span);
+			}
+		}
+
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static void EnsureStack()
 		{
@@ -147,5 +184,10 @@ namespace Zipkin
 		{
 			LocalSpanStack.Value = new Stack<Span>();
 		}
+	}
+
+	public struct TraceInfo
+	{
+		internal Span span;
 	}
 }

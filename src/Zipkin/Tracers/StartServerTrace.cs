@@ -24,7 +24,7 @@ namespace Zipkin
 
 			if (TraceContextPropagation.TryObtainTraceIdFrom(crossProcessContext, out traceId, out parentSpanId))
 			{
-				_start = NanoClock.Start();
+				_start = TickClock.Start();
 
 				Span = new Span(traceId, name, RandomHelper.NewId())
 				{
@@ -40,7 +40,7 @@ namespace Zipkin
 		{
 			if (Span != null)
 			{
-				Span.DurationInMicroseconds = NanoClock.GetDuration(_start);
+				Span.DurationInMicroseconds = TickClock.GetDuration(_start);
 
 				TraceContextPropagation.PopSpan(this.Span);
 

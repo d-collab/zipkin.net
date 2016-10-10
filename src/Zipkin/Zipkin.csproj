@@ -78,7 +78,8 @@
     <Compile Include="Codecs\Thrift\TypeSystem\TList.cs" />
     <Compile Include="Codecs\Thrift\TypeSystem\TMap.cs" />
     <Compile Include="Codecs\Thrift\TypeSystem\TStruct.cs" />
-    <Compile Include="Tracers\NanoClock.cs" />
+    <Compile Include="Tracers\TickClock.cs" />
+    <Compile Include="Tracers\StartClientOrContinueTrace.cs" />
     <Compile Include="Tracers\TraceAnnotate.cs" />
     <Compile Include="ZipkinBootstrapper.cs" />
     <Compile Include="Model\Annotation.cs" />
