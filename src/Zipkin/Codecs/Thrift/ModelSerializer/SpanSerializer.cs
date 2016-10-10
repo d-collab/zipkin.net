@@ -1,9 +1,6 @@
 namespace Zipkin.Codecs.Thrift.ModelSerializer
 {
 	using System.Collections.Generic;
-	using System.Diagnostics;
-	using Json;
-	using Model;
 	using TypeSystem;
 
 	public static class SpanSerializer

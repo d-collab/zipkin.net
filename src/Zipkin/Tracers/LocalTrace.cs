@@ -1,7 +1,5 @@
 namespace Zipkin
 {
-	using System;
-	using System.Diagnostics;
 	using Utils;
 
 	/// <summary>
@@ -9,11 +7,12 @@ namespace Zipkin
 	/// </summary>
 	public class LocalTrace : ITrace
 	{
-		private readonly long _start ;
+		private readonly long _start;
 
 		public Span Span { get; private set; }
 
 		/// <summary>
+		/// Creates a local span.
 		/// Give it a short lower-case description of the activity
 		/// </summary>
 		/// <param name="name"></param>

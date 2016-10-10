@@ -3,6 +3,7 @@ namespace Zipkin
 	using System;
 	using System.Net;
 	using System.Threading;
+	using Utils;
 
 	internal static class ZipkinConfig
 	{

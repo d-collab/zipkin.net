@@ -2,7 +2,6 @@ namespace Zipkin.Codecs.Thrift.ModelSerializer
 {
 	using System;
 	using System.Text;
-	using Model;
 	using TypeSystem;
 
 	public static class BinaryAnnotationSerializer

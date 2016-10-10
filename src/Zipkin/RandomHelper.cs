@@ -1,4 +1,4 @@
-namespace Zipkin
+namespace Zipkin.Utils
 {
 	using System;
 	using System.Runtime.CompilerServices;

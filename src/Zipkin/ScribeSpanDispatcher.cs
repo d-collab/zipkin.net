@@ -45,7 +45,7 @@ namespace Zipkin
 		{
 			var logEntries = _converter.ToLogEntries(spans);
 
-			await _scribeService.Log(logEntries);
+			await _scribeService.Log(logEntries).ConfigureAwait(false);
 		}
 
 		public override void Dispose()

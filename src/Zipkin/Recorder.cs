@@ -1,7 +1,6 @@
 ﻿namespace Zipkin
 {
 	using System;
-	using Model;
 
 	/// <summary>
 	/// Abstraction on strategy to record the Spans collected. 

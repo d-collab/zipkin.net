@@ -192,9 +192,9 @@
 				oprot.IncrementRecursionDepth();
 				try
 				{
-					TStruct struc = new TStruct(/*"Log_result"*/);
+					var struc = new TStruct(/*"Log_result"*/);
 					oprot.WriteStructBegin(struc);
-					TField field = new TField();
+					var field = new TField();
 
 					if (this.Success != null)
 					{

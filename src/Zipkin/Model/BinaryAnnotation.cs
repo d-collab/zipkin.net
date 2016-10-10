@@ -1,7 +1,6 @@
 namespace Zipkin
 {
 	using System;
-	using System.Text;
 
 	/// <summary>
 	/// Binary annotations are tags applied to a Span to give it context. For
@@ -13,6 +12,7 @@ namespace Zipkin
 	/// historical implementation detail than a structural concern.
 	/// </para>
 	/// </summary>
+	/// 
 	/// <remarks>
 	/// Binary annotations can repeat, and vary on the host. Similar to Annotation,
 	/// the host indicates who logged the event. This allows you to tell the

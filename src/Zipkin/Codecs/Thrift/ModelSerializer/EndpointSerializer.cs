@@ -2,7 +2,6 @@
 {
 	using System;
 	using System.Net;
-	using Model;
 	using Thrift;
 	using TypeSystem;
 

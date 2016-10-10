@@ -7,7 +7,7 @@ namespace Zipkin
 	/// <summary>
 	/// Starts a server trace, which is contingent on an existing client trace. 
 	/// 
-	/// The Span is also annotated with <see cref="AnnotationConstants.SERVER_RECV"/> as per guidelines.
+	/// The Span is also annotated with <see cref="StandardAnnotationKeys.ServerRecv"/> as per guidelines.
 	/// </summary>
 	public class StartServerTrace : ITrace
 	{
@@ -30,7 +30,7 @@ namespace Zipkin
 				{
 					ParentId = parentSpanId
 				};
-				this.AnnotateWithTag(PredefinedTag.ServerRecv);
+				this.TimeAnnotateWith(PredefinedTag.ServerRecv);
 
 				TraceContextPropagation.PushSpan(Span);
 			}

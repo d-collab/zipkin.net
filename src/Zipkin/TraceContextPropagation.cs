@@ -11,6 +11,13 @@ namespace Zipkin
 	/// </summary>
 	public static class TraceContextPropagation
 	{
+		// Todo: make it compatible with
+//		X-B3-TraceId : 64 lower-hex encoded bits(required)
+//		X-B3-SpanId : 64 lower-hex encoded bits(required)
+//		X-B3-ParentSpanId : 64 lower-hex encoded bits(absent on root span)
+//		X-B3-Sampled : Boolean(either “1” or “0”, can be absent)
+//		X-B3-Flags : “1” means debug(can be absent)
+
 		private const string TraceIdKey = "_zipkin_traceid";
 		private const string SpanIdKey = "_zipkin_spanid";
 

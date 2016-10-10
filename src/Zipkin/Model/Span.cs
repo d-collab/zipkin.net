@@ -2,7 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using Model;
+
 
 	/// <summary>
 	/// A trace is a series of spans (often RPC calls) which form a latency tree.

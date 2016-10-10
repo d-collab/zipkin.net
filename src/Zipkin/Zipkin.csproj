@@ -20,6 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>0659,0661,1591</NoWarn>
+    <DocumentationFile>bin\Debug\Zipkin.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +30,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>0659,0661,1591</NoWarn>
+    <DocumentationFile>bin\Release\Zipkin.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -74,9 +78,10 @@
     <Compile Include="Codecs\Thrift\TypeSystem\TMap.cs" />
     <Compile Include="Codecs\Thrift\TypeSystem\TStruct.cs" />
     <Compile Include="Tracers\NanoClock.cs" />
+    <Compile Include="Tracers\TraceAnnotate.cs" />
     <Compile Include="ZipkinBootstrapper.cs" />
     <Compile Include="Model\Annotation.cs" />
-    <Compile Include="Model\AnnotationConstants.cs" />
+    <Compile Include="Model\StandardAnnotationKeys.cs" />
     <Compile Include="Model\AnnotationType.cs" />
     <Compile Include="Model\BinaryAnnotation.cs" />
     <Compile Include="Tracers\ITrace.cs" />
@@ -94,7 +99,7 @@
     <Compile Include="Tracers\StartServerTrace.cs" />
     <Compile Include="Tracers\LocalTrace.cs" />
     <Compile Include="TraceContextPropagation.cs" />
-    <Compile Include="Tracers\CommonKeys.cs" />
+    <Compile Include="Model\CustomAnnotationKeys.cs" />
     <Compile Include="Codecs\Json\StreamWriterExtensions.cs" />
     <Compile Include="Codecs\ThriftCodec.cs" />
     <Compile Include="Tracers\StartClientTrace.cs" />

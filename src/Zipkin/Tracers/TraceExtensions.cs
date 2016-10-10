@@ -2,7 +2,7 @@
 {
 	using System.Collections.Generic;
 	using System.Runtime.CompilerServices;
-	using Model;
+
 
 	public static class TraceExtensions
 	{
@@ -22,7 +22,17 @@
 		/// <summary>
 		/// Adds an annotation specified with the tag. 
 		/// </summary>
-		public static ITrace AnnotateWithTag(this ITrace source, PredefinedTag tag)
+		public static ITrace TimeAnnotateWith(this ITrace source, PredefinedTag tag)
+		{
+			source.TimeAnnotateWith(ToStringTag(tag));
+
+			return source;
+		}
+
+		/// <summary>
+		/// Adds an annotation specified with the tag. 
+		/// </summary>
+		public static ITrace TimeAnnotateWith(this ITrace source, string tag)
 		{
 			if (source.Span == null) return source;
 
@@ -30,7 +40,7 @@
 
 			source.Span.Annotations.Add(new Annotation()
 			{
-				Value = ToStringTag(tag),
+				Value = tag,
 				Host = ZipkinConfig.ThisService
 			});
 
@@ -42,7 +52,7 @@
 		/// </summary>
 		public static ITrace SetLocalComponentName(this ITrace source, string name)
 		{
-			source.AnnotateWith(new BinaryAnnotation(AnnotationConstants.LOCAL_COMPONENT, name));
+			source.AnnotateWith(new BinaryAnnotation(StandardAnnotationKeys.LocalComponent, name));
 
 			return source;
 		}
@@ -108,59 +118,59 @@
 			switch (tag)
 			{
 				case PredefinedTag.ClientSend:
-					return AnnotationConstants.CLIENT_SEND;
+					return StandardAnnotationKeys.ClientSend;
 
 				case PredefinedTag.ClientRecv:
-					return AnnotationConstants.CLIENT_RECV;
+					return StandardAnnotationKeys.ClientRecv;
 
 				case PredefinedTag.ServerSend:
-					return AnnotationConstants.SERVER_SEND;
+					return StandardAnnotationKeys.ServerSend;
 
 				case PredefinedTag.ServerRecv:
-					return AnnotationConstants.SERVER_RECV;
+					return StandardAnnotationKeys.ServerRecv;
 
 				case PredefinedTag.WireSend:
-					return AnnotationConstants.WIRE_SEND;
+					return StandardAnnotationKeys.WireSend;
 
 				case PredefinedTag.WireRecv:
-					return AnnotationConstants.WIRE_RECV;
+					return StandardAnnotationKeys.WireRecv;
 
 				case PredefinedTag.ClientSendFragment:
-					return AnnotationConstants.CLIENT_SEND_FRAGMENT;
+					return StandardAnnotationKeys.ClientSendFragment;
 
 				case PredefinedTag.ClientRecvFragment:
-					return AnnotationConstants.CLIENT_RECV_FRAGMENT;
+					return StandardAnnotationKeys.ClientRecvFragment;
 
 				case PredefinedTag.ServerSendFragment:
-					return AnnotationConstants.SERVER_SEND_FRAGMENT;
+					return StandardAnnotationKeys.ServerSendFragment;
 
 				case PredefinedTag.ServerRecvFragment:
-					return AnnotationConstants.SERVER_RECV_FRAGMENT;
+					return StandardAnnotationKeys.ServerRecvFragment;
 
 				case PredefinedTag.ClientAddr:
-					return AnnotationConstants.CLIENT_ADDR;
+					return StandardAnnotationKeys.ClientAddr;
 
 				case PredefinedTag.ServerAddr:
-					return AnnotationConstants.SERVER_ADDR;
+					return StandardAnnotationKeys.ServerAddr;
 
 				case PredefinedTag.LocalComponent:
-					return AnnotationConstants.SERVER_ADDR;
+					return StandardAnnotationKeys.ServerAddr;
 
 				case PredefinedTag.Error:
-					return AnnotationConstants.ERROR;
+					return StandardAnnotationKeys.Error;
 
 
 				case PredefinedTag.HttpHost:
-					return CommonKeys.HttpHost;
+					return CustomAnnotationKeys.HttpHost;
 
 				case PredefinedTag.HttpMethod:
-					return CommonKeys.HttpMethod;
+					return CustomAnnotationKeys.HttpMethod;
 
 				case PredefinedTag.HttpPath:
-					return CommonKeys.HttpPath;
+					return CustomAnnotationKeys.HttpPath;
 
 				case PredefinedTag.SqlQuery:
-					return CommonKeys.SqlQuery;
+					return CustomAnnotationKeys.SqlQuery;
 
 				default:
 					return string.Empty;

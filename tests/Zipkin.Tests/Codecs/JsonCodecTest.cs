@@ -5,9 +5,7 @@
 	using System.IO;
 	using System.Net;
 	using System.Text;
-	using Codecs;
 	using FluentAssertions;
-	using Model;
 	using NUnit.Framework;
 
 
@@ -73,16 +71,16 @@
 
 				BinaryAnnotations = new List<BinaryAnnotation>()
 				{
-					new BinaryAnnotation(AnnotationConstants.CLIENT_SEND, int.MaxValue - 10)
+					new BinaryAnnotation(StandardAnnotationKeys.ClientSend, int.MaxValue - 10)
 					{
 						Host = new Endpoint() { IPAddress = IPAddress.Loopback, ServiceName = "hellosvc" },
 					},
-					new BinaryAnnotation(AnnotationConstants.CLIENT_RECV, 12345678910L),
-					new BinaryAnnotation(AnnotationConstants.CLIENT_SEND, "this is a string"),
-					new BinaryAnnotation(AnnotationConstants.CLIENT_SEND, true),
-					new BinaryAnnotation(AnnotationConstants.CLIENT_ADDR, false),
-					new BinaryAnnotation(AnnotationConstants.CLIENT_RECV_FRAGMENT, new byte[] { 1,2,3,4,5 }),
-					new BinaryAnnotation(AnnotationConstants.SERVER_ADDR, 1234.421),
+					new BinaryAnnotation(StandardAnnotationKeys.ClientRecv, 12345678910L),
+					new BinaryAnnotation(StandardAnnotationKeys.ClientSend, "this is a string"),
+					new BinaryAnnotation(StandardAnnotationKeys.ClientSend, true),
+					new BinaryAnnotation(StandardAnnotationKeys.ClientAddr, false),
+					new BinaryAnnotation(StandardAnnotationKeys.ClientRecvFragment, new byte[] { 1,2,3,4,5 }),
+					new BinaryAnnotation(StandardAnnotationKeys.ServerAddr, 1234.421),
 				}
 			}, stream);
 

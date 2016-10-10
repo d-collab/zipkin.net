@@ -1,20 +1,21 @@
 # Zipkin.net
 
-A .net client for [zipkin](http://zipkin.io/) - a great tool for distributed tracing. 
+A .net client for [zipkin](http://zipkin.io/) - a great tool for distributed tracing. This client is focused on low mem footprint / allocations.
+
 
 ### Quick intro
 
 ```C#
-using (new StartClientTrace("client-op")) // Starts a root trace + span
+using (new StartClientTrace("client-op")) // Starts a root trace span
 {
 	var crossProcessBag = new Dictionary<string,object>();
 	TraceContextPropagation.PropagateTraceIdOnto(crossProcessBag);
 
 	Thread.Sleep(20);
 
-	using (new StartServerTrace("server-op", crossProcessBag).SetLocalComponentName("fake-server"))
+	using (new StartServerTrace("server-op", crossProcessBag).SetLocalComponentName("fake-server")) // new span
 	{
-		using (new LocalTrace("op1").AnnotateWith(PredefinedTag.SqlQuery, "select * from  ..."))
+		using (new LocalTrace("op1").AnnotateWith(PredefinedTag.SqlQuery, "select * from  ...")) // local span + annotation
 		{
 			Thread.Sleep(70);
 		}
@@ -23,10 +24,10 @@ using (new StartClientTrace("client-op")) // Starts a root trace + span
 		{
 			Thread.Sleep(90);
 
-			trace.AnnotateWith(PredefinedTag.Error, "error message"); // mark it with an error
+			trace.AnnotateWith(PredefinedTag.Error, "error message"); // binary annotation
 		}
 
-		using (new LocalTrace("op2").AnnotateWithTag(PredefinedTag.ServerSend))
+		using (new LocalTrace("op2").TimeAnnotateWith(PredefinedTag.ServerSend)) // timed annotation
 		{
 			Thread.Sleep(90);
 		}
@@ -34,7 +35,7 @@ using (new StartClientTrace("client-op")) // Starts a root trace + span
 }
 ```
 
-This code above would translate into:
+The code above translates into:
 
 ![alt text](http://i.imgur.com/cfNn4Q2.png "Capture of zipkin")
 
@@ -46,11 +47,11 @@ Just use the ZipkinBootstrapper:
 ```C#
 new Zipkin.ZipkinBootstrapper("my-service")
 			.ZipkinAt("localhost") // where's the zipkin server?
-			.WithSampleRate(0.1)   // 0.1 means trace 10% 
+			.WithSampleRate(0.1)   // 0.1 means trace 10% of calls
 			.Start();
 ```
 
-In addition, you may config 
+In addition, you may also call:
 
 * ```WithMetrics(RecorderMetrics)```: to provide a custom RecorderMetrics instance 
 * ```WithCodec(Codec)```: to replace Thrift for Json if you want
@@ -105,6 +106,20 @@ using (new LocalTrace("query-accounts"))
 }
 ```
 
+##### Adding info about points in time
+
+This is done with ```Annotation```  on the ```Span```, which contains a Timestamp and a kind. 
+
+The semantically known kinds can be found at StandardAnnotationKeys.cs, while other common types can be found at CustomAnnotationKeys. 
+
+You're free to define your own.
+
+
+##### Adding information
+
+This is done with ```BinaryAnnotation``` on the ```Span```. It differs from ```Annotation``` in not including a Timestamp but allows you to add extra info. 
+
+Use it to capture sql, http information, etc.
 
 
 #### Crossing process boundaries

@@ -48,7 +48,7 @@ namespace Zipkin
 						Headers = { ContentType = new MediaTypeHeaderValue(_codec.ContentType) }
 					};
 
-					await _client.PostAsync(_path, content);
+					await _client.PostAsync(_path, content).ConfigureAwait(false);
 				}
 			}
 			finally

@@ -1,7 +1,6 @@
 namespace Zipkin.Codecs.Thrift.ModelSerializer
 {
 	using System;
-	using Model;
 	using TypeSystem;
 
 	public static class AnnotationSerializer

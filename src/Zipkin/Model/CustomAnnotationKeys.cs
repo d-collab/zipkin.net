@@ -1,9 +1,9 @@
-﻿namespace Zipkin.Model
+﻿namespace Zipkin
 {
 	/// <summary>
 	/// Well-known {BinaryAnnotation#key} binary annotation keys.
 	/// </summary>
-	public static class CommonKeys
+	public static class CustomAnnotationKeys
 	{
 		/// <summary>
 		/// The domain portion of the URL or host header. Ex. "mybucket.s3.amazonaws.com"
