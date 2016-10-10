@@ -1,6 +1,7 @@
 namespace Zipkin
 {
 	using System;
+	using System.Configuration;
 	using System.Net;
 	using System.Threading;
 	using Utils;
@@ -47,6 +48,28 @@ namespace Zipkin
 			_httpPort = 9411;
 			_scribePort = 9410;
 			_zipkinHostname = "localhost";
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public static ZipkinBootstrapper BuildFromAppDomainConfig()
+		{
+			//< add key="ZipkinServerName"  value="localhost" />
+			//< add key="ZipkinSampleRate"  value="0.5" />
+			//< add key="ZipkinServiceName" value="pit" />
+
+			var serviceName = ConfigurationManager.AppSettings["ZipkinServiceName"];
+			var sampleRate = Convert.ToDouble(ConfigurationManager.AppSettings["ZipkinSampleRate"] ?? "0.0");
+			var zipkinServer = ConfigurationManager.AppSettings["ZipkinServerName"];
+
+			if (serviceName == null)  throw new Exception("Missing configuration entry: 'ZipkinServiceName' under appsettings, which should define this service's name");
+			if (zipkinServer == null) throw new Exception("Missing configuration entry: 'ZipkinServerName' under appsettings, which should point to zipkin server's hostname");
+
+			return new ZipkinBootstrapper(serviceName)
+				.WithSampleRate(sampleRate)
+				.ZipkinAt(zipkinServer);
 		}
 
 		/// <summary>
