@@ -36,7 +36,10 @@ namespace Zipkin
 			_hostname = hostname;
 			_port = port;
 
-			_tcpClient = new TcpClient();
+			_tcpClient = new TcpClient
+			{
+				NoDelay = true
+			};
 			_tcpClient.Connect(hostname, port);
 
 			_frame = new TFramedTransport(new TTcpClientTransport(_tcpClient));

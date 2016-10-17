@@ -5,7 +5,7 @@ namespace Zipkin
 	/// <summary>
 	/// Represents a local (within service) trace of an activity. 
 	/// </summary>
-	public class LocalTrace : ITrace
+	public struct LocalTrace : ITrace
 	{
 		private readonly long _start;
 
@@ -20,16 +20,21 @@ namespace Zipkin
 		{
 			if (TraceContextPropagation.IsWithinTrace)
 			{
-				_start = TickClock.Start();
-
 				var parentSpan = TraceContextPropagation.CurrentSpan;
 
-				Span = new Span(parentSpan.TraceId, name, RandomHelper.NewId())
+				this.Span = new Span(parentSpan.TraceId, name, RandomHelper.NewId())
 				{
 					ParentId = parentSpan.Id
 				};
 
+				this._start = TickClock.Start();
+
 				TraceContextPropagation.PushSpan(this.Span);
+			}
+			else
+			{
+				this.Span = null;
+				this._start = 0;
 			}
 		}
 
@@ -39,7 +44,7 @@ namespace Zipkin
 			{
 				Span.DurationInMicroseconds = TickClock.GetDuration(_start);
 
-				TraceContextPropagation.PopSpan(this.Span);
+				TraceContextPropagation.PopSpan();
 
 				ZipkinConfig.Record(Span);
 

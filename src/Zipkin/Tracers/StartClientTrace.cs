@@ -9,10 +9,9 @@ namespace Zipkin
 	/// 
 	/// The Span is also annotated with <see cref="StandardAnnotationKeys.ClientSend"/> as per guidelines.
 	/// </summary>
-	public class StartClientTrace : ITrace
+	public struct StartClientTrace : ITrace
 	{
 		private readonly long _start;
-		private readonly bool _isSampling;
 		private bool _skipDuration;
 
 		public Span Span { get; private set; }
@@ -24,16 +23,22 @@ namespace Zipkin
 		/// </summary>
 		public StartClientTrace(string name)
 		{
-			_isSampling = ZipkinConfig.ShouldSample();
+			_skipDuration = false;
 
-			if (_isSampling)
+			var shouldSample = ZipkinConfig.ShouldSample();
+
+			if (shouldSample)
 			{
-				_start = TickClock.Start();
-
-				Span = new Span(RandomHelper.NewId(), name, RandomHelper.NewId());
+				this._start = TickClock.Start();
+				this.Span = new Span(RandomHelper.NewId(), name, RandomHelper.NewId());
 				this.TimeAnnotateWith(PredefinedTag.ClientSend);
 
-				TraceContextPropagation.PushSpan(Span);
+				TraceContextPropagation.PushSpan(this.Span);
+			}
+			else
+			{
+				this._start = 0;
+				this.Span = null;
 			}
 		}
 
@@ -44,12 +49,12 @@ namespace Zipkin
 
 		public void Dispose()
 		{
-			if (_isSampling)
+			if (Span != null)
 			{
 				if (!_skipDuration)
 					Span.DurationInMicroseconds = TickClock.GetDuration(_start);
 
-				TraceContextPropagation.PopSpan(Span);
+				TraceContextPropagation.PopSpan();
 
 				ZipkinConfig.Record(Span);
 

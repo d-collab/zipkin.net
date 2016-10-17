@@ -43,7 +43,8 @@ namespace Zipkin.Tests
 		{
 			// Arrange
 			var dict = new Dictionary<string, object>();
-			TraceContextPropagation.PushSpan(new Span(123, "a", 1000));
+			var span = new Span(123, "a", 1000);
+			TraceContextPropagation.PushSpan(span);
 
 			// Act
 			TraceContextPropagation.PropagateTraceIdOnto(dict);
@@ -59,7 +60,8 @@ namespace Zipkin.Tests
 		{
 			// Arrange
 			var dict = new Dictionary<string, string>();
-			TraceContextPropagation.PushSpan(new Span(123, "a", 1000));
+			var span = new Span(123, "a", 1000);
+			TraceContextPropagation.PushSpan(span);
 
 			// Act
 			TraceContextPropagation.PropagateTraceIdOnto(dict);
@@ -74,7 +76,8 @@ namespace Zipkin.Tests
 		public void IsWithinTrace_Should_be_true_When_there_is_a_context2()
 		{
 			// Arrange
-			TraceContextPropagation.PushSpan(new Span(123, "a", 1000));
+			var span = new Span(123, "a", 1000);
+			TraceContextPropagation.PushSpan(span);
 
 			// Act + Assert
 			TraceContextPropagation.IsWithinTrace.Should().BeTrue();
@@ -84,8 +87,10 @@ namespace Zipkin.Tests
 		public void CurrentSpan_Should_return_top_of_the_stack_When_there_is_a_context()
 		{
 			// Arrange
-			TraceContextPropagation.PushSpan(new Span(123, "a", 1000));
-			TraceContextPropagation.PushSpan(new Span(321, "a", 2000));
+			var span1 = new Span(123, "a", 1000);
+			var span2 = new Span(321, "a", 2000);
+			TraceContextPropagation.PushSpan(span1);
+			TraceContextPropagation.PushSpan(span2);
 
 			// Act
 			var currentSpan = TraceContextPropagation.CurrentSpan;
@@ -114,7 +119,8 @@ namespace Zipkin.Tests
 		{
 			// Arrange
 			var dict = new Dictionary<string, string>();
-			TraceContextPropagation.PushSpan(new Span(123, "a", 1000));
+			var span = new Span(123, "a", 1000);
+			TraceContextPropagation.PushSpan(span);
 			TraceContextPropagation.PropagateTraceIdOnto(dict);
 
 			// Act

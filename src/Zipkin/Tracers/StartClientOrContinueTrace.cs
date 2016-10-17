@@ -4,7 +4,7 @@ namespace Zipkin
 	/// Helper trace that is either a <see cref="LocalTrace"/> if we are within a trace
 	/// or a <see cref="StartClientTrace"/> if we are not. 
 	/// </summary>
-	public class StartClientOrContinueTrace : ITrace
+	public struct StartClientOrContinueTrace : ITrace
 	{
 		public ITrace Inner;
 
@@ -22,7 +22,7 @@ namespace Zipkin
 
 		public void SkipDuration()
 		{
-			(this.Inner as StartClientTrace)?.SkipDuration();
+			(Inner as StartClientTrace?)?.SkipDuration();
 		}
 
 		public Span Span => this.Inner?.Span;

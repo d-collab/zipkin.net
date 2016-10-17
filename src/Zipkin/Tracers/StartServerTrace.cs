@@ -9,7 +9,7 @@ namespace Zipkin
 	/// 
 	/// The Span is also annotated with <see cref="StandardAnnotationKeys.ServerRecv"/> as per guidelines.
 	/// </summary>
-	public class StartServerTrace : ITrace
+	public struct StartServerTrace : ITrace
 	{
 		private readonly long _start;
 
@@ -24,15 +24,20 @@ namespace Zipkin
 
 			if (TraceContextPropagation.TryObtainTraceIdFrom(crossProcessContext, out traceId, out parentSpanId))
 			{
-				_start = TickClock.Start();
+				this._start = TickClock.Start();
 
-				Span = new Span(traceId, name, RandomHelper.NewId())
+				this.Span = new Span(traceId, name, RandomHelper.NewId())
 				{
 					ParentId = parentSpanId
 				};
 				this.TimeAnnotateWith(PredefinedTag.ServerRecv);
 
-				TraceContextPropagation.PushSpan(Span);
+				TraceContextPropagation.PushSpan(this.Span);
+			}
+			else
+			{
+				this.Span = null;
+				this._start = 0;
 			}
 		}
 
@@ -42,7 +47,7 @@ namespace Zipkin
 			{
 				Span.DurationInMicroseconds = TickClock.GetDuration(_start);
 
-				TraceContextPropagation.PopSpan(this.Span);
+				TraceContextPropagation.PopSpan();
 
 				ZipkinConfig.Record(Span);
 

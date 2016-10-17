@@ -38,11 +38,11 @@ namespace Zipkin
 		/// <summary>
 		/// For internal use only. Pops Span from context stack.
 		/// </summary>
-		public static void PopSpan(Span span)
+		public static void PopSpan()
 		{
 			EnsureStack();
 
-			var existing = LocalSpanStack.Value.Pop();
+			LocalSpanStack.Value.Pop();
 		}
 
 		public static Span CurrentSpan
@@ -165,7 +165,7 @@ namespace Zipkin
 		{
 			if (capturedContext.span != null)
 			{
-				PopSpan(capturedContext.span);
+				PopSpan();
 
 				capturedContext.span.DurationInMicroseconds = TickClock.GetDuration(capturedContext.span.DurationInMicroseconds.Value);
 
