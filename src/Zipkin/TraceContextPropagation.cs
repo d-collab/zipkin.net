@@ -100,41 +100,70 @@ namespace Zipkin
 		/// Checks the specified dictionary for required trace information. 
 		/// The dictionary should carry data from a cross process boundary (for example http headers)
 		/// </summary>
-		public static bool TryObtainTraceIdFrom(IDictionary<string, string> dictionary, out long traceId, out long parentSpanId)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryObtainTraceIdFrom(IDictionary<string, string> dictionary, out TraceInfo? traceInfo)
 		{
-			traceId = parentSpanId = 0;
+			traceInfo = null;
 
 			string value;
 			if (dictionary != null && dictionary.TryGetValue(TraceIdKey, out value))
 			{
-				traceId = Convert.ToInt64(value);
+				var traceId = Convert.ToInt64(value);
+				var parentSpanId = 0L;
 
 				if (dictionary.TryGetValue(SpanIdKey, out value))
 					parentSpanId = Convert.ToInt64(value);
+
+				traceInfo = new TraceInfo
+				{
+					span = new Span(traceId, null, 0L) { ParentId = parentSpanId }
+				};
 			}
 
-			return traceId != 0 && parentSpanId != 0;
+			return traceInfo.HasValue;
 		}
 
 		/// <summary>
 		/// Checks the specified dictionary for required trace information. 
 		/// The dictionary should carry data from a cross process boundary (for example http headers)
 		/// </summary>
-		public static bool TryObtainTraceIdFrom(IDictionary<string, object> dictionary, out long traceId, out long parentSpanId)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryObtainTraceIdFrom(IDictionary<string, object> dictionary, out TraceInfo? traceInfo)
 		{
-			traceId = parentSpanId = 0;
+			traceInfo = null;
 
 			object value;
 			if (dictionary != null && dictionary.TryGetValue(TraceIdKey, out value))
 			{
-				traceId = Convert.ToInt64(value);
+				var traceId = Convert.ToInt64(value);
+				long parentSpanId = 0;
 
 				if (dictionary.TryGetValue(SpanIdKey, out value))
 					parentSpanId = Convert.ToInt64(value);
 
+				traceInfo = new TraceInfo
+				{
+					span = new Span(traceId, null, 0L) { ParentId = parentSpanId }
+				};
 			}
 
-			return traceId != 0 && parentSpanId != 0;
+			return traceInfo.HasValue;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static TraceInfo? GetTraceInfoFrom(IDictionary<string, string> dictionary)
+		{
+			TraceInfo? traceInfo;
+			TryObtainTraceIdFrom(dictionary, out traceInfo);
+			return traceInfo;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static TraceInfo? GetTraceInfoFrom(IDictionary<string, object> dictionary)
+		{
+			TraceInfo? traceInfo;
+			TryObtainTraceIdFrom(dictionary, out traceInfo);
+			return traceInfo;
 		}
 
 		public static TraceInfo CaptureCurrentTrace()

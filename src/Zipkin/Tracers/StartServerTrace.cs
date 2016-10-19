@@ -18,17 +18,25 @@ namespace Zipkin
 		/// <summary>
 		/// Give it a short lower-case description of the activity
 		/// </summary>
-		public StartServerTrace(string name, IDictionary<string, object> crossProcessContext)
+		public StartServerTrace(string name, IDictionary<string, object> crossProcessContext) :
+			this(name, TraceContextPropagation.GetTraceInfoFrom(crossProcessContext))
 		{
-			long traceId, parentSpanId;
+		}
 
-			if (TraceContextPropagation.TryObtainTraceIdFrom(crossProcessContext, out traceId, out parentSpanId))
+		public StartServerTrace(string name, IDictionary<string, string> crossProcessContext) : 
+			this(name, TraceContextPropagation.GetTraceInfoFrom(crossProcessContext))
+		{
+		}
+
+		public StartServerTrace(string name, TraceInfo? traceInfo)
+		{
+			if (traceInfo.HasValue)
 			{
 				this._start = TickClock.Start();
 
-				this.Span = new Span(traceId, name, RandomHelper.NewId())
+				this.Span = new Span(traceInfo.Value.span.TraceId, name, RandomHelper.NewId())
 				{
-					ParentId = parentSpanId
+					ParentId = traceInfo.Value.span.ParentId
 				};
 				this.TimeAnnotateWith(PredefinedTag.ServerRecv);
 

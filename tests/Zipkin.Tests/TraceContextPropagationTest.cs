@@ -107,8 +107,8 @@ namespace Zipkin.Tests
 			var dict = new Dictionary<string, string>();
 
 			// Act
-			long traceid, parentSpanId;
-			TraceContextPropagation.TryObtainTraceIdFrom(dict, out traceid, out parentSpanId).Should().BeFalse();
+			TraceInfo? traceInfo;
+			TraceContextPropagation.TryObtainTraceIdFrom(dict, out traceInfo).Should().BeFalse();
 
 			// Assert
 			dict.Should().HaveCount(0);
@@ -124,13 +124,13 @@ namespace Zipkin.Tests
 			TraceContextPropagation.PropagateTraceIdOnto(dict);
 
 			// Act
-			long traceid, parentSpanId;
-			TraceContextPropagation.TryObtainTraceIdFrom(dict, out traceid, out parentSpanId).Should().BeTrue();
+			TraceInfo? traceInfo;
+			TraceContextPropagation.TryObtainTraceIdFrom(dict, out traceInfo).Should().BeTrue();
 
 			// Assert
 			dict.Should().HaveCount(2);
-			traceid.Should().Be(123L);
-			parentSpanId.Should().Be(1000L);
+			traceInfo.Value.span.TraceId.Should().Be(123L);
+			traceInfo.Value.span.ParentId.Should().Be(1000L);
 		}
 	}
 }
