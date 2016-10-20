@@ -74,12 +74,20 @@ namespace Zipkin
 		}
 
 		/// <summary>
+		/// Allows one to change the sampling rate post set up
+		/// </summary>
+		public static void ChangeSamplingRate(double newRate)
+		{
+			if (newRate < 0.0 || newRate > 1.0) throw new ArgumentOutOfRangeException(nameof(newRate), "sample rate should be between 0.0 and 1.0");
+			ZipkinConfig._sampleRate = newRate;
+		}
+
+		/// <summary>
 		/// Establish the sample rate: between 0.0 and 1.0
 		/// </summary>
 		public ZipkinBootstrapper WithSampleRate(double sampleRate)
 		{
-			if (sampleRate < 0.0 || sampleRate > 1.0)
-				throw new ArgumentOutOfRangeException(nameof(sampleRate), "sample rate should be between 0.0 and 1.0");
+			if (sampleRate < 0.0 || sampleRate > 1.0) throw new ArgumentOutOfRangeException(nameof(sampleRate), "sample rate should be between 0.0 and 1.0");
 
 			ZipkinConfig._sampleRate = sampleRate;
 
