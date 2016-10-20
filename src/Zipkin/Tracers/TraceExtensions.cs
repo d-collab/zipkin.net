@@ -7,19 +7,6 @@
 	public static class TraceExtensions
 	{
 		/// <summary>
-		/// A trace marked as Debug will always be traced, in other words, it
-		/// skips the sampling rate configuration. 
-		/// </summary>
-		public static ITrace MarkAsDebug(this ITrace source, bool isDebug)
-		{
-			if (source.Span == null) return source;
-
-			source.Span.IsDebug = isDebug;
-
-			return source;
-		}
-
-		/// <summary>
 		/// Adds an annotation specified with the tag. 
 		/// </summary>
 		public static ITrace TimeAnnotateWith(this ITrace source, PredefinedTag tag)

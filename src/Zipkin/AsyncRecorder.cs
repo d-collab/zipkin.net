@@ -30,6 +30,8 @@ namespace Zipkin
 
 		public override void Record(params Span[] spans)
 		{
+			if (spans == null || spans.Length == 0) return;
+
 			if (_disposed == DisposedSet || _enqueuedSpans.Count + spans.Length >= MaxQueueSize)
 			{
 				_metrics.Dropping(spans.Length);

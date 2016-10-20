@@ -4,6 +4,7 @@ namespace Zipkin
 	using System.Configuration;
 	using System.Globalization;
 	using System.Net;
+	using System.Runtime.CompilerServices;
 	using System.Threading;
 	using Utils;
 
@@ -13,6 +14,7 @@ namespace Zipkin
 		internal static Endpoint ThisService;
 		internal static Recorder Recorder;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool ShouldSample()
 		{
 			return RandomHelper.Sample(_sampleRate);

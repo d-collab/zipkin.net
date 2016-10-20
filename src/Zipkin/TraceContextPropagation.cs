@@ -50,8 +50,7 @@ namespace Zipkin
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get
 			{
-				EnsureStack();
-				if (LocalSpanStack.Value.Count != 0)
+				if (LocalSpanStack.Value != null && LocalSpanStack.Value.Count != 0)
 				{
 					return LocalSpanStack.Value.Peek();
 				}
@@ -190,6 +189,7 @@ namespace Zipkin
 				PushSpan(capturedContext.span);
 			}
 		}
+
 		public static void UndoApply(TraceInfo capturedContext)
 		{
 			if (capturedContext.span != null)
@@ -209,9 +209,12 @@ namespace Zipkin
 				LocalSpanStack.Value = new Stack<Span>();
 		}
 
+		/// <summary>
+		/// For unit tests
+		/// </summary>
 		internal static void Reset()
 		{
-			LocalSpanStack.Value = new Stack<Span>();
+			LocalSpanStack.Value = null;
 		}
 	}
 

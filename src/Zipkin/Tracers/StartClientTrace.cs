@@ -5,7 +5,7 @@ namespace Zipkin
 	/// <summary>
 	/// Starts a trace. 
 	/// 
-	/// <para>The trace is subject to the sampling rate configured for the process.</para>
+	/// <para>The trace is subject to the sampling rate configured for the process or always sampled if isDebug is set to true.</para>
 	/// 
 	/// The Span is also annotated with <see cref="StandardAnnotationKeys.ClientSend"/> as per guidelines.
 	/// </summary>
@@ -21,16 +21,19 @@ namespace Zipkin
 		/// The <see cref="StandardAnnotationKeys.ClientSend"/> annotation is added by default.
 		/// Give it a short lower-case description of the activity
 		/// </summary>
-		public StartClientTrace(string name)
+		public StartClientTrace(string name, bool isDebug = false)
 		{
 			_skipDuration = false;
 
-			var shouldSample = ZipkinConfig.ShouldSample();
+			var shouldSample = isDebug || ZipkinConfig.ShouldSample();
 
 			if (shouldSample)
 			{
 				this._start = TickClock.Start();
-				this.Span = new Span(RandomHelper.NewId(), name, RandomHelper.NewId());
+				this.Span = new Span(RandomHelper.NewId(), name, RandomHelper.NewId())
+				{
+					IsDebug = isDebug
+				};
 				this.TimeAnnotateWith(PredefinedTag.ClientSend);
 
 				TraceContextPropagation.PushSpan(this.Span);
