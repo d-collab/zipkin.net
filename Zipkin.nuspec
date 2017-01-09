@@ -17,7 +17,7 @@
 
 		<dependencies>
 			<group>
-				<dependency id="System.Buffers" version="4.0.0" />
+				<dependency id="System.Buffers" version="4.3.0" />
 			</group>
 		</dependencies>
 
