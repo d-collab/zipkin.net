@@ -51,16 +51,19 @@
 		{
 			// if (!IsOpen)
 			//		throw new TTransportException(TTransportException.ExceptionType.NotOpen);
+			System.ArraySegment<byte> buf;
 
-			byte[] buf = _writeBuffer.GetBuffer();
-			int frameSize = (int) _writeBuffer.Position;
+			if (_writeBuffer.TryGetBuffer(out buf))
+			{
+				int frameSize = (int)_writeBuffer.Position;
 
-			WriteFrameSizeToInnerTransport(frameSize);
-			
-			// Send the entire message at once
-			_innerTransport.Write(buf, 0, frameSize);
+				WriteFrameSizeToInnerTransport(frameSize);
 
-			_innerTransport.Flush();
+				// Send the entire message at once
+				_innerTransport.Write(buf.Array, 0, frameSize);
+
+				_innerTransport.Flush();
+			}
 		}
 
 		protected override void Dispose(bool disposing)
@@ -76,8 +79,12 @@
 			// _readBuffer.Seek(0, SeekOrigin.Begin);
 			_readBuffer.Position = 0;
 
-			byte[] buff = _readBuffer.GetBuffer();
-			_innerTransport.ReadAll(buff, 0, size);
+			System.ArraySegment<byte> buf;
+
+			if (_readBuffer.TryGetBuffer(out buf))
+			{
+				_innerTransport.ReadAll(buf.Array, 0, size);
+			}
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,7 +1,7 @@
 namespace Zipkin
 {
+	using Microsoft.Extensions.Configuration;
 	using System;
-	using System.Configuration;
 	using System.Globalization;
 	using System.Net;
 	using System.Runtime.CompilerServices;
@@ -62,10 +62,12 @@ namespace Zipkin
 			//< add key="ZipkinServerName"  value="localhost" />
 			//< add key="ZipkinSampleRate"  value="0.5" />
 			//< add key="ZipkinServiceName" value="pit" />
+			var builder = new ConfigurationBuilder();
+			var config = builder.Build();
 
-			var serviceName = ConfigurationManager.AppSettings["ZipkinServiceName"];
-			var sampleRate = double.Parse(ConfigurationManager.AppSettings["ZipkinSampleRate"] ?? "0.0", CultureInfo.InvariantCulture);
-			var zipkinServer = ConfigurationManager.AppSettings["ZipkinServerName"];
+			var serviceName = config["ZipkinServiceName"];
+			var sampleRate = double.Parse(config["ZipkinSampleRate"] ?? "0.0", CultureInfo.InvariantCulture);
+			var zipkinServer = config["ZipkinServerName"];
 
 			if (serviceName == null)  throw new Exception("Missing configuration entry: 'ZipkinServiceName' under appsettings, which should define this service's name");
 			if (zipkinServer == null) throw new Exception("Missing configuration entry: 'ZipkinServerName' under appsettings, which should point to zipkin server's hostname");

@@ -1,9 +1,7 @@
 ﻿namespace Zipkin.Codecs.Thrift.TypeSystem
 {
 	using System;
-	using System.Runtime.Serialization;
 
-	[Serializable]
 	public class TTransportException : TException
 	{
 		protected ExceptionType type;
@@ -23,10 +21,6 @@
 		}
 
 		public TTransportException(string message) : base(message)
-		{
-		}
-
-		protected TTransportException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 

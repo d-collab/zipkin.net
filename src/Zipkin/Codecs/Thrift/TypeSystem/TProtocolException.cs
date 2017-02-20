@@ -1,9 +1,7 @@
 ﻿namespace Zipkin.Codecs.Thrift.TypeSystem
 {
 	using System;
-	using System.Runtime.Serialization;
 
-	[Serializable]
 	public class TProtocolException : TException
 	{
 		public const int UNKNOWN = 0;
@@ -31,10 +29,6 @@
 		}
 
 		public TProtocolException(string message) : base(message)
-		{
-		}
-
-		protected TProtocolException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 

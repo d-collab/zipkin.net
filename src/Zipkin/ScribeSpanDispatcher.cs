@@ -40,7 +40,7 @@ namespace Zipkin
 			{
 				NoDelay = true
 			};
-			_tcpClient.Connect(hostname, port);
+			_tcpClient.ConnectAsync(hostname, port).RunSynchronously();
 
 			_frame = new TFramedTransport(new TTcpClientTransport(_tcpClient));
 			_scribeService = new ScribeService(new ThriftProtocol(_frame));
@@ -88,7 +88,16 @@ namespace Zipkin
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			private static string ToBase64(MemoryStream stream)
 			{
-				return Convert.ToBase64String(stream.GetBuffer(), 0, (int)stream.Length);
+				ArraySegment<byte> buffer;
+
+				if (stream.TryGetBuffer(out buffer))
+				{
+					return Convert.ToBase64String(buffer.Array, 0, (int)stream.Length);
+				}
+				else
+				{
+					return string.Empty;
+				}
 			}
 		}
 	}
