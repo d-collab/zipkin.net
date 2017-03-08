@@ -10,6 +10,10 @@ namespace Zipkin.Codecs.Thrift.TypeSystem
 		{
 		}
 
+#if RELEASENET46
+
+#endif
+
 		public TApplicationException(ExceptionType type)
 		{
 			this.type = type;

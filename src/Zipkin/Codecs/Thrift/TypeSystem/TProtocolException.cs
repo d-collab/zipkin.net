@@ -32,6 +32,10 @@
 		{
 		}
 
+#if RELEASENET46
+
+#endif
+
 		public int getType()
 		{
 			return type_;

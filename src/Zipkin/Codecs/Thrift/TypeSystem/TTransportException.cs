@@ -24,6 +24,10 @@
 		{
 		}
 
+#if RELEASENET46
+
+#endif
+
 		public ExceptionType Type
 		{
 			get { return type; }
