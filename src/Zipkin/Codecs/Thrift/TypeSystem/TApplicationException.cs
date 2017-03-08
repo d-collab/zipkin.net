@@ -1,10 +1,7 @@
 namespace Zipkin.Codecs.Thrift.TypeSystem
 {
 	using System;
-	using System.Runtime.Serialization;
 
-
-	[Serializable]
 	public class TApplicationException : TException
 	{
 		protected ExceptionType type;
@@ -21,10 +18,6 @@ namespace Zipkin.Codecs.Thrift.TypeSystem
 		public TApplicationException(ExceptionType type, string message) : base(message)
 		{
 			this.type = type;
-		}
-
-		protected TApplicationException(SerializationInfo info, StreamingContext context) : base(info, context)
-		{
 		}
 
 		public static TApplicationException Read(ThriftProtocol iprot)
