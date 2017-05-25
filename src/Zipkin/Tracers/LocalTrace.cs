@@ -18,9 +18,11 @@ namespace Zipkin
 		/// <param name="name"></param>
 		public LocalTrace(string name)
 		{
-			if (TraceContextPropagation.IsWithinTrace)
+			var parentSpan = TraceContextPropagation.CurrentSpan;
+//			if (TraceContextPropagation.IsWithinTrace)
+			if (parentSpan != null)
 			{
-				var parentSpan = TraceContextPropagation.CurrentSpan;
+				// var parentSpan = TraceContextPropagation.CurrentSpan;
 
 				this.Span = new Span(parentSpan.TraceId, name, RandomHelper.NewId())
 				{

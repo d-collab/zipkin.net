@@ -73,9 +73,9 @@ namespace Zipkin
 		/// </summary>
 		public static void PropagateTraceIdOnto(IDictionary<string, string> dictionary)
 		{
-			if (IsWithinTrace)
+			var span = CurrentSpan;
+			if (span != null)
 			{
-				var span = CurrentSpan;
 				dictionary[TraceIdKey] = span.TraceId.ToString();
 				dictionary[SpanIdKey] = span.Id.ToString();
 			}
@@ -87,9 +87,9 @@ namespace Zipkin
 		/// </summary>
 		public static void PropagateTraceIdOnto(IDictionary<string, object> dictionary)
 		{
-			if (IsWithinTrace)
+			var span = CurrentSpan;
+			if (span != null)
 			{
-				var span = CurrentSpan;
 				dictionary[TraceIdKey] = span.TraceId;
 				dictionary[SpanIdKey] = span.Id;
 			}
