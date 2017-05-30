@@ -22,6 +22,7 @@ namespace Zipkin
 		private const string TraceIdKey = "_zipkin_traceid";
 		private const string SpanIdKey = "_zipkin_spanid";
 
+		// AsyncLocal is unreliable. We get race situations every once in a while
 		private static readonly AsyncLocal<Stack<Span>> LocalSpanStack = new AsyncLocal<Stack<Span>>();
 
 		/// <summary>
