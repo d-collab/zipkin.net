@@ -5,20 +5,19 @@
 		<title>Zipkin client</title>
 		<version>$version$</version>
 		<authors>hamilton verissimo (aka hammett)</authors>
-		<owners>Clear CTVM</owners>
-		<licenseUrl>https://raw.githubusercontent.com/clearctvm/zipkin.net/master/LICENSE</licenseUrl>
-		<projectUrl>https://github.com/clearctvm/zipkin.net</projectUrl>
+		<owners>d-collab</owners>
+		<licenseUrl>https://raw.githubusercontent.com/d-collab/zipkin.net/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/d-collab/zipkin.net</projectUrl>
 		<!-- <iconUrl>http://docs.castleproject.org/GetFile.aspx?File=/castleLogo100px.png</iconUrl> -->
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Zipkin client for .net</description>
 		<summary>If you have a zipkin server running, this client can connect to it using Rest or Scribe, Json or Thrift.</summary>
-		<copyright>Copyright 2016 Clear CTVM - (http://www.clear.com.br) </copyright>
+		<copyright>Copyright 2017 d-collab </copyright>
 		<tags>zipkin distributed tracing</tags>
 
 		<dependencies>
-			<group>
-				<dependency id="System.Buffers" version="4.3.0" />
-			</group>
+			<dependency id="NETStandard.Library" version="1.6.1" />
+			<dependency id="System.Buffers" version="4.3.0" />
 		</dependencies>
 
 		<frameworkAssemblies>
@@ -28,9 +27,14 @@
 
 	<files>
 		<file src="LICENSE.txt" />
-		<file src="src\Zipkin\bin\Release\Zipkin.dll" target="lib/net461" />
-		<file src="src\Zipkin\bin\Release\Zipkin.pdb" target="lib/net461" />
-		<file src="src\Zipkin\bin\Release\Zipkin.xml" target="lib/net461" />
+		
+		<file src="src\Zipkin\bin\Release\net461\Zipkin.dll" target="lib/net461" />
+		<file src="src\Zipkin\bin\Release\net461\Zipkin.pdb" target="lib/net461" />
+		<file src="src\Zipkin\bin\Release\netstandard1.3\Zipkin.xml" target="lib/net461" />
+
+		<file src="src\Zipkin\bin\Release\netstandard1.3\Zipkin.dll" target="lib/netstandard1.3" />
+		<file src="src\Zipkin\bin\Release\netstandard1.3\Zipkin.pdb" target="lib/netstandard1.3" />
+		<file src="src\Zipkin\bin\Release\netstandard1.3\Zipkin.xml" target="lib/netstandard1.3" />
 	</files>
 
 </package>

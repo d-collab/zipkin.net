@@ -1,14 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+	  <TargetFrameworks>netstandard1.3;net461</TargetFrameworks>
+	  <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
+	  <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseNet46|AnyCPU'">
     <DefineConstants>TRACE;RELEASENET46</DefineConstants>
     <OutputPath>bin\ReleaseNet46\net46\</OutputPath>
+    <DocumentationFile>bin\ReleaseNet46\net46\Zipkin.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+	<NoWarn>1701;1702;1705;1591</NoWarn>
+	<DocumentationFile>bin\Release\Zipkin.xml</DocumentationFile>
+  </PropertyGroup>
+	
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.0" />
     <PackageReference Include="System.Buffers" Version="4.3.0" />

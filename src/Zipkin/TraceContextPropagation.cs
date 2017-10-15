@@ -1,6 +1,7 @@
 namespace Zipkin
 {
 	using System;
+	using System.Collections.Concurrent;
 	using System.Collections.Generic;
 	using System.Runtime.CompilerServices;
 	using System.Threading;
@@ -23,7 +24,7 @@ namespace Zipkin
 		private const string SpanIdKey = "_zipkin_spanid";
 
 		// AsyncLocal is unreliable. We get race situations every once in a while
-		private static readonly AsyncLocal<Stack<Span>> LocalSpanStack = new AsyncLocal<Stack<Span>>();
+		private static readonly AsyncLocal<ConcurrentStack<Span>> LocalSpanStack = new AsyncLocal<ConcurrentStack<Span>>();
 
 		/// <summary>
 		/// For internal use only. Pushes Span onto context stack.
@@ -33,7 +34,9 @@ namespace Zipkin
 		{
 			EnsureStack();
 
-			LocalSpanStack.Value.Push(span);
+			var stack = LocalSpanStack.Value;
+
+			stack.Push(span);
 		}
 
 		/// <summary>
@@ -43,7 +46,10 @@ namespace Zipkin
 		{
 			EnsureStack();
 
-			LocalSpanStack.Value.Pop();
+			var stack = LocalSpanStack.Value;
+
+			Span dummy;
+			stack.TryPop(out dummy);
 		}
 
 		public static Span CurrentSpan
@@ -51,9 +57,12 @@ namespace Zipkin
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get
 			{
-				if (LocalSpanStack.Value != null && LocalSpanStack.Value.Count != 0)
+				var stack = LocalSpanStack.Value;
+				if (stack != null /*&& stack.Count != 0*/)
 				{
-					return LocalSpanStack.Value.Peek();
+					Span dummy;
+					stack.TryPeek(out dummy);
+					return dummy;
 				}
 				return null;
 			}
@@ -207,7 +216,7 @@ namespace Zipkin
 		private static void EnsureStack()
 		{
 			if (LocalSpanStack.Value == null)
-				LocalSpanStack.Value = new Stack<Span>();
+				LocalSpanStack.Value = new ConcurrentStack<Span>();
 		}
 
 		/// <summary>

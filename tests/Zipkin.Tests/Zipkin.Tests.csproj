@@ -75,6 +75,7 @@
     <Compile Include="StubDispatcher.cs" />
     <Compile Include="StubRecorderMetrics.cs" />
     <Compile Include="TraceContextPropagationTest.cs" />
+    <Compile Include="TraceContextPropagation_PushPop.cs" />
     <Compile Include="Tracers\LocalTraceTest.cs" />
     <Compile Include="Tracers\StartClientTraceTest.cs" />
     <Compile Include="Tracers\StartServerTraceTest.cs" />
