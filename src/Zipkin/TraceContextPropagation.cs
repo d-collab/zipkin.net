@@ -231,5 +231,13 @@ namespace Zipkin
 	public struct TraceInfo
 	{
 		internal Span span;
+
+		public TraceInfo(long traceId, long parentSpanId) : this()
+		{
+			this.span = new Span(traceId, "", RandomHelper.NewId())
+			{
+				ParentId = parentSpanId
+			};
+		}
 	}
 }
